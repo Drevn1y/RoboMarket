@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @Entity
-public class VacanciesRequestEntity {
+public class VacanciesEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +18,7 @@ public class VacanciesRequestEntity {
     private String name;
     private String email;
     private String phone;
+    private Boolean read = false;
 
     @ElementCollection
     @CollectionTable(name = "vacancy_resumes", joinColumns = @JoinColumn(name = "vacancy_request_id"))

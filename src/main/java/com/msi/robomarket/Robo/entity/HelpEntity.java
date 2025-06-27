@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @Entity
-public class HelpRequestEntity {
+public class HelpEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
