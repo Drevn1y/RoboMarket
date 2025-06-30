@@ -6,8 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface VacanciesRepository extends JpaRepository<VacanciesEntity, Long> {
-
-    VacanciesEntity findAllVacancies();
-    VacanciesEntity findVacanciesRequest(Long vacancyId);
-
+    
 }

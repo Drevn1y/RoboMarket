@@ -12,19 +12,14 @@ public class VacanciesEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long vacancyRequestEntityId;
+    private Long vacancyId;
 
     private String vacancyName;
     private String name;
     private String email;
     private String phone;
     private Boolean read = false;
-
-    @ElementCollection
-    @CollectionTable(name = "vacancy_resumes", joinColumns = @JoinColumn(name = "vacancy_request_id"))
-    @Column(name = "resume_url")
-    private List<String> resumeUrl;
-
+    private String resumeUrl;
     private String message;
 
     private LocalDateTime createdAt = LocalDateTime.now();
