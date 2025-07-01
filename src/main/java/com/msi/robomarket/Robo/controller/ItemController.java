@@ -4,6 +4,7 @@ import com.msi.robomarket.Robo.dto.item.CreateItemRequestDTO;
 import com.msi.robomarket.Robo.dto.item.ItemResponseDTO;
 import com.msi.robomarket.Robo.dto.item.SearchItemsRequestDTO;
 import com.msi.robomarket.Robo.dto.item.UpdateItemRequestDTO;
+import com.msi.robomarket.Robo.enums.Category;
 import com.msi.robomarket.Robo.enums.ItemStatus;
 import com.msi.robomarket.Robo.service.ItemService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -93,6 +94,11 @@ public class ItemController {
     public ResponseEntity<List<String>> getItemImages(@PathVariable Long itemId) {
         List<String> imageUrls = itemService.getItemImages(itemId);
         return ResponseEntity.ok(imageUrls);
+    }
+
+    @GetMapping("/get-by-category/")
+    public List<ItemResponseDTO> getItemsByCategory(@RequestParam Category category) {
+        return itemService.findByCategory(category);
     }
 
 }

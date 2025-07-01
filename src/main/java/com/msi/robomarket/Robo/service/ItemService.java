@@ -4,6 +4,7 @@ import com.msi.robomarket.Robo.dto.item.CreateItemRequestDTO;
 import com.msi.robomarket.Robo.dto.item.ItemResponseDTO;
 import com.msi.robomarket.Robo.dto.item.SearchItemsRequestDTO;
 import com.msi.robomarket.Robo.dto.item.UpdateItemRequestDTO;
+import com.msi.robomarket.Robo.enums.Category;
 import com.msi.robomarket.Robo.enums.ItemStatus;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +19,7 @@ public interface ItemService {
     List<ItemResponseDTO> findAllItemsInModeration();
     List<ItemResponseDTO> findAllItemsInAVAILABLE();
     List<ItemResponseDTO> findAllItemsInUNAVAILABLE();
+    List<ItemResponseDTO> findByCategory(Category category);
 
     // Поиск товаров с разными фильтрами (параметры в твоём порядке)
     List<ItemResponseDTO> searchItems(SearchItemsRequestDTO dto);

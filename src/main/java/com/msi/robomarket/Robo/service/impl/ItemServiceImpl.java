@@ -5,6 +5,7 @@ import com.msi.robomarket.Robo.dto.item.ItemResponseDTO;
 import com.msi.robomarket.Robo.dto.item.SearchItemsRequestDTO;
 import com.msi.robomarket.Robo.dto.item.UpdateItemRequestDTO;
 import com.msi.robomarket.Robo.entity.*;
+import com.msi.robomarket.Robo.enums.Category;
 import com.msi.robomarket.Robo.enums.ItemStatus;
 import com.msi.robomarket.Robo.mapper.ItemMapper;
 import com.msi.robomarket.Robo.repository.ItemRepository;
@@ -65,6 +66,14 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemResponseDTO> findAllItemsInUNAVAILABLE() {
         return itemRepository.findByItemStatus(ItemStatus.UNAVAILABLE)
+                .stream()
+                .map(itemMapper::toResponseDTO)
+                .toList();
+    }
+
+    @Override
+    public List<ItemResponseDTO> findByCategory(Category category) {
+        return itemRepository.findItemsByCategory(category)
                 .stream()
                 .map(itemMapper::toResponseDTO)
                 .toList();
