@@ -11,8 +11,7 @@ import java.util.Optional;
 public interface VacanciesService {
 
     Optional<VacanciesResponseDTO> findVacanciesById(Long vacanciesId);
-    List<VacanciesResponseDTO> findAllNewVacancies();
-    List<VacanciesResponseDTO> findAllReadVacancies();
+    List<VacanciesResponseDTO> findAllVacancies();
     VacanciesResponseDTO createVacancy(VacanciesRequestDTO dto);
     void markVacancyAsRead(Long vacancyId);
     void deleteVacancies(Long vacanciesId);

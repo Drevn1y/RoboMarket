@@ -1,16 +1,16 @@
-package com.msi.robomarket.Robo.dto.vacancies;
+package com.msi.robomarket.Robo.dto.advertising;
 
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
-public class VacanciesRequestDTO {
+public class AdvertisingRequestDTO {
 
-    private String vacancyName;
+    private String company;
     private String name;
-    private String email;
     private String phone;
+    private String email;
     private String message;
 
 }

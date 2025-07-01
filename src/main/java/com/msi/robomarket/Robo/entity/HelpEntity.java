@@ -12,7 +12,7 @@ public class HelpEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long helpRequestEntityId;
+    private Long helpId;
 
     private String name;
     private String email;

@@ -14,7 +14,7 @@ public class AdvertisingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long advertisingRequestId;
+    private Long advertisingId;
 
     private String company;
     private String name;
@@ -22,6 +22,7 @@ public class AdvertisingEntity {
     private String email;
     private String message;
 
+    private Boolean read;
     private LocalDateTime createdAt = LocalDateTime.now();
 
 }

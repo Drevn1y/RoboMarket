@@ -35,21 +35,12 @@ public class VacanciesServiceImpl implements VacanciesService {
     }
 
     @Override
-    public List<VacanciesResponseDTO> findAllNewVacancies() {
-        return vacanciesRepository.findAll().stream()
-                .filter(v -> Boolean.FALSE.equals(v.getRead())) // непрочитанные
+    public List<VacanciesResponseDTO> findAllVacancies() {
+        return vacanciesRepository.findAll()
+                .stream()
                 .map(vacanciesMapper::toResponseDTO)
                 .toList();
     }
-
-    @Override
-    public List<VacanciesResponseDTO> findAllReadVacancies() {
-        return vacanciesRepository.findAll().stream()
-                .filter(v -> Boolean.TRUE.equals(v.getRead())) // непрочитанные
-                .map(vacanciesMapper::toResponseDTO)
-                .toList();
-    }
-
 
     @Override
     public VacanciesResponseDTO createVacancy(VacanciesRequestDTO dto) {

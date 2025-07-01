@@ -32,14 +32,9 @@ public class VacanciesController {
         return vacanciesService.findVacanciesById(id);
     }
 
-    @GetMapping("/all-new-vacancies")
+    @GetMapping("/all-vacancies")
     public List<VacanciesResponseDTO> getNewVacancies() {
-        return vacanciesService.findAllNewVacancies();
-    }
-
-    @GetMapping("/all-read-vacancies")
-    public List<VacanciesResponseDTO> getReadVacancies() {
-        return vacanciesService.findAllReadVacancies();
+        return vacanciesService.findAllVacancies();
     }
 
     @PostMapping("/create-vacancy")
@@ -87,7 +82,5 @@ public class VacanciesController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
                 .body(resource);
     }
-
-
 
 }
