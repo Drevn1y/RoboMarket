@@ -21,6 +21,4 @@ public class NotificationEntity {
     private TypeNotification typeNotification;
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    private Boolean read = false; // для отметки "прочитано" или нет
-
 }
