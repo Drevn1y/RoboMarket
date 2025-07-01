@@ -1,24 +1,19 @@
-package com.msi.robomarket.Robo.entity;
+package com.msi.robomarket.Robo.dto.help;
 
-import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
-@Entity
-public class HelpEntity {
+public class HelpResponseDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long helpId;
 
     private String name;
     private String email;
     private String theme;
     private String message;
-
     private Boolean read;
     private LocalDateTime createdAt = LocalDateTime.now();
+
 }
