@@ -54,7 +54,7 @@ public class VacanciesController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping(value = "/upload-images/vacancy/{id}",
+    @PostMapping(value = "/upload-file/vacancy/{id}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public VacanciesResponseDTO uploadVacancy(
             @PathVariable long id,
