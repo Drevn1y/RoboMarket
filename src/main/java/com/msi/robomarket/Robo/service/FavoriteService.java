@@ -12,6 +12,7 @@ public interface FavoriteService {
     Optional<ItemResponseDTO> findFavoriteItemById(Long favoriteId);
     List<FavoriteResponseDTO> getFavoritesByUserId(Long userId);
     FavoriteResponseDTO addFavorite(FavoriteRequestDTO dto);
+    Boolean isFavorite(FavoriteRequestDTO dto);
     void removeFavorite(FavoriteRequestDTO dto);
     void clearFavorite(Long userId);
 

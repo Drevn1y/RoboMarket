@@ -44,6 +44,13 @@ public class FavoriteServiceImpl implements FavoriteService {
     }
 
     @Override
+    public Boolean isFavorite(FavoriteRequestDTO dto) {
+        return favoriteRepository
+                .findByUserEntityUserIdAndItemEntityItemId(dto.getUserId(), dto.getItemId())
+                .isPresent();
+    }
+
+    @Override
     public void removeFavorite(FavoriteRequestDTO dto) {
         favoriteRepository.findByUserEntityUserIdAndItemEntityItemId(dto.getUserId(), dto.getItemId())
                 .ifPresent(favoriteRepository::delete);

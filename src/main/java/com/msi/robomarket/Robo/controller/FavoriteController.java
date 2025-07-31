@@ -6,12 +6,11 @@ import com.msi.robomarket.Robo.dto.item.ItemResponseDTO;
 import com.msi.robomarket.Robo.service.FavoriteService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 @Data
 @RestController
@@ -49,5 +48,12 @@ public class FavoriteController {
         favoriteService.clearFavorite(userId);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/isFavorite")
+    public ResponseEntity<Map<String, Boolean>> isFavorite(@RequestBody FavoriteRequestDTO dto) {
+        boolean favorite = favoriteService.isFavorite(dto);
+        return ResponseEntity.ok(Map.of("isFavorite", favorite));
+    }
+
 
 }
