@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoboMarket | Мой профиль</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .avatar-upload {
+            position: relative;
+            display: inline-block;
+        }
+        .avatar-upload:hover .avatar-overlay {
+            opacity: 1;
+        }
+        .avatar-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            cursor: pointer;
+        }
+        .edit-input {
+            display: none;
+        }
+        .edit-mode .view-mode {
+            display: none;
+        }
+        .edit-mode .edit-input {
+            display: block;
+        }
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+        .form-input {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            padding: 0.5rem 0.75rem;
+            width: 100%;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+        .country-warning {
+            display: none;
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        .password-fields {
+            display: none;
+        }
+        .edit-mode .password-fields {
+            display: block;
+        }
+        .nav-link:hover {
+            color: #3b82f6;
+            transition: color 0.2s ease;
+        }
+        .robot-icon {
+            position: relative;
+        }
+        .robot-icon::before,
+        .robot-icon::after {
+            content: "";
+            position: absolute;
+            top: -8px;
+            width: 8px;
+            height: 12px;
+            background-color: currentColor;
+            border-radius: 2px;
+        }
+        .robot-icon::before {
+            left: -8px;
+            transform: rotate(-20deg);
+        }
+        .robot-icon::after {
+            right: -8px;
+            transform: rotate(20deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                <div class="flex items-center justify-between mb-3 md:mb-0">
+                    <a href="index.html" class="flex items-center">
+                        <div class="robot-icon text-2xl mr-2 relative">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <span class="text-xl font-bold">RoboMarket</span>
+                    </a>
+                    <button class="md:hidden text-xl" id="mobile-menu-button">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+                
+                <!-- Поле поиска для десктопа -->
+                <div class="hidden md:flex flex-1 mx-4">
+                    <div class="relative w-full flex">
+                        <input type="text" placeholder="Я ищу..." 
+                            class="flex-grow py-2 px-4 rounded-l-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button class="px-4 bg-blue-700 rounded-r-full hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="index.html" class="hover:text-blue-200 flex items-center">
+                        <i class="fas fa-home mr-1"></i>
+                        <span>Главная</span>
+                    </a>
+                    <a href="favorites.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-heart mr-1"></i>
+                        <span>Избранное</span>
+                    </a>
+                    <a href="notifications.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-bell mr-1"></i>
+                        <span>Уведомления</span>
+                    </a>
+                    <a href="profile.html" class="text-blue-200 flex items-center">
+                        <i class="far fa-user mr-1"></i>
+                        <span>Профиль</span>
+                    </a>
+                    <a href="new-ad.html" class="bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded-full font-medium">
+                        <i class="fas fa-plus mr-1"></i>
+                        <span>Подать объявление</span>
+                    </a>
+                    <button id="logout-button" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-full font-medium">
+                        <i class="fas fa-sign-out-alt mr-1"></i>
+                        <span>Выйти</span>
+                    </button>
+                </nav>
+            </div>
+            
+            <!-- Mobile Menu (hidden by default) -->
+            <div class="hidden md:hidden mt-4 pt-4 border-t border-blue-500" id="mobile-menu">
+                <div class="flex flex-col space-y-3">
+                    <a href="index.html" class="hover:text-blue-200 flex items-center">
+                        <i class="fas fa-home mr-3"></i>
+                        <span>Главная</span>
+                    </a>
+                    <a href="favorites.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-heart mr-3"></i>
+                        <span>Избранное</span>
+                    </a>
+                    <a href="notifications.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-bell mr-3"></i>
+                        <span>Уведомления</span>
+                    </a>
+                    <a href="profile.html" class="text-blue-200 flex items-center">
+                        <i class="far fa-user mr-3"></i>
+                        <span>Профиль</span>
+                    </a>
+                    <a href="new-ad.html" class="hover:bg-blue-700 px-4 py-2 rounded-full font-medium text-center">
+                        <i class="fas fa-plus mr-1"></i>
+                        <span>Подать объявление</span>
+                    </a>
+                    <button id="logout-button-mobile" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-full font-medium text-center">
+                        <i class="fas fa-sign-out-alt mr-1"></i>
+                        <span>Выйти</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Основное содержимое -->
+    <main class="container mx-auto p-4 mt-4">
+        <section class="bg-white p-4 rounded-lg shadow-md">
+            <h1 class="text-xl md:text-2xl font-bold text-blue-600 mb-2">Мой профиль</h1>
+            <div class="flex flex-col md:flex-row items-center mb-4">
+                <img id="avatar-img" src="https://via.placeholder.com/128" alt="Аватар" class="w-24 h-24 md:w-32 md:h-32 rounded-full mr-0 md:mr-4 border-2 border-blue-200">
+                <div>
+                    <h2 id="username" class="text-lg md:text-xl font-semibold text-gray-800 mb-2"></h2>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
+                <button id="edit-toggle" class="bg-blue-500 text-white font-medium py-1 px-2 md:py-2 md:px-4 rounded-lg shadow-md hover:bg-blue-600 transition-colors text-sm md:text-base">Редактировать профиль</button>
+                <label for="avatar-input" class="bg-gray-200 text-gray-700 font-medium py-1 px-2 md:py-2 md:px-4 rounded-lg shadow-md hover:bg-gray-300 transition-colors text-sm md:text-base cursor-pointer">Изменить фото</label>
+                <input type="file" id="avatar-input" accept="image/*" class="hidden mt-2 text-sm text-gray-500 w-full md:w-auto">
+            </div>
+
+            <form id="profile-form" class="space-y-2 md:space-y-4">
+                <div>
+                    <h3 class="text-base md:text-lg font-semibold text-blue-600 mb-1 md:mb-2">Личная информация</h3>
+                    <div class="space-y-2">
+                        <div>
+                            <label class="block text-gray-700 font-medium text-sm md:text-base">Имя</label>
+                            <span class="view-mode text-gray-800" data-field="first_name">Не указано</span>
+                            <input name="first_name" class="edit-input w-full p-1 md:p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" style="display: none;" minlength="3" maxlength="32">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-medium text-sm md:text-base">Фамилия</label>
+                            <span class="view-mode text-gray-800" data-field="last_name">Не указано</span>
+                            <input name="last_name" class="edit-input w-full p-1 md:p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" style="display: none;" minlength="3" maxlength="32">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-medium text-sm md:text-base">Дата рождения</label>
+                            <span class="view-mode text-gray-800" data-field="birth_date">Не указано</span>
+                            <input name="birth_date" type="date" class="edit-input w-full p-1 md:p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" style="display: none;">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-medium text-sm md:text-base">Пол</label>
+                            <span class="view-mode text-gray-800" data-field="gender">Не указано</span>
+                            <select name="gender" class="edit-input w-full p-1 md:p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" style="display: none;">
+                                <option value="Мужской">Мужской</option>
+                                <option value="Женский">Женский</option>
+                                <option value="Другой">Другой</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-base md:text-lg font-semibold text-blue-600 mb-1 md:mb-2">Контактная информация</h3>
+                    <div class="space-y-2">
+                        <div>
+                            <label class="block text-gray-700 font-medium text-sm md:text-base">Email</label>
+                            <span class="view-mode text-gray-800" data-field="email">Не указано</span>
+                            <input name="email" type="email" class="edit-input w-full p-1 md:p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" style="display: none;" minlength="8" maxlength="40">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-medium text-sm md:text-base">Телефон</label>
+                            <span class="view-mode text-gray-800" data-field="phone">Не указано</span>
+                            <input name="phone" type="tel" class="edit-input w-full p-1 md:p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" style="display: none;" minlength="8" maxlength="32">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-medium text-sm md:text-base">Страна</label>
+                            <span class="view-mode text-gray-800" data-field="country">Не указано</span>
+                            <select id="country-select" name="country" class="edit-input w-full p-1 md:p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" style="display: none;">
+                                <option value="Russia">Россия</option>
+                                <option value="Uzbekistan">Узбекистан</option>
+                                <option value="Belarus">Беларусь</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-medium text-sm md:text-base">Город</label>
+                            <span class="view-mode text-gray-800" data-field="city">Не указано</span>
+                            <select id="city-select" name="city" class="edit-input w-full p-1 md:p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" style="display: none;"></select>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-base md:text-lg font-semibold text-blue-600 mb-1 md:mb-2">Смена пароля</h3>
+                    <div class="space-y-2">
+                        <div class="relative">
+                            <label class="block text-gray-700 font-medium text-sm md:text-base">Текущий пароль</label>
+                            <input name="current_password" type="password" class="edit-input w-full p-1 md:p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" style="display: none;" minlength="8" maxlength="32">
+                            <button type="button" onclick="togglePassword(this)" class="absolute right-2 top-2 md:top-3 text-gray-500">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="relative">
+                            <label class="block text-gray-700 font-medium text-sm md:text-base">Новый пароль</label>
+                            <input name="new_password" type="password" class="edit-input w-full p-1 md:p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" style="display: none;" minlength="8" maxlength="32">
+                            <button type="button" onclick="togglePassword(this)" class="absolute right-2 top-2 md:top-3 text-gray-500">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="relative">
+                            <label class="block text-gray-700 font-medium text-sm md:text-base">Повторите пароль</label>
+                            <input name="confirm_password" type="password" class="edit-input w-full p-1 md:p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" style="display: none;" minlength="8" maxlength="32">
+                            <button type="button" onclick="togglePassword(this)" class="absolute right-2 top-2 md:top-3 text-gray-500">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <p class="text-xs md:text-sm text-gray-600">Пароль должен содержать не менее 8 символов, включая цифры и буквы.</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
+                    <button id="cancel-edit" type="button" class="hidden bg-gray-500 text-white p-1 md:p-2 rounded hover:bg-gray-600 text-sm md:text-base w-full md:w-auto">Отмена</button>
+                    <button type="submit" class="hidden bg-blue-500 text-white p-1 md:p-2 rounded hover:bg-blue-600 text-sm md:text-base w-full md:w-auto">Сохранить изменения</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="mt-4 bg-white p-4 rounded-lg shadow-md">
+            <h2 class="text-xl md:text-2xl font-bold text-blue-600 mb-2">Мои объявления</h2>
+            <div id="user-ads" class="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3"></div>
+            <button onclick="window.location.href='new-ad.html'" class="mt-2 bg-green-500 text-white p-1 md:p-2 rounded hover:bg-green-600 text-sm md:text-base w-full md:w-auto">Добавить объявление</button>
+        </section>
+
+        <section id="edit-ad-form" class="hidden">
+            <div class="form-container">
+                <h2 class="text-2xl font-bold mb-4">Редактировать объявление</h2>
+                <form>
+                    <input type="hidden" name="itemId">
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Название</label>
+                        <input name="itemName" class="w-full border rounded p-2" minlength="3" maxlength="64">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Описание</label>
+                        <textarea name="itemDescription" class="w-full border rounded p-2" rows="4" minlength="3" maxlength="170"></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Категория</label>
+                        <select name="category" class="w-full border rounded p-2">
+                            <option value="HOUSE">Недвижимость</option>
+                            <option value="CHILDREN">Детский мир</option>
+                            <option value="ELECTRONICS">Электроника</option>
+                            <option value="TRANSPORT">Транспорт</option>
+                            <option value="FURNITURE">Мебель</option>
+                            <option value="ANIMAL">Животные</option>
+                            <option value="FREE">Отдам даром</option>
+                            <option value="OTHER">Прочие</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Цена</label>
+                        <input name="itemPrice" type="number" step="0.01" class="w-full border rounded p-2">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Валюта</label>
+                        <select name="typePrice" class="w-full border rounded p-2">
+                            <option value="UZS">сум</option>
+                            <option value="USD">доллар</option>
+                            <option value="EUR">евро</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="typeMoney" class="block text-gray-700 font-bold mb-2">Тип цены</label>
+                        <select id="typeMoney" name="typeMoney" class="w-full border rounded p-2">
+                            <option value="FIXED">Фиксированная</option>
+                            <option value="NEGOTIABLE">Договорная</option>
+                            <option value="FREE">Бесплатная</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Тип продавца</label>
+                        <select name="typeSeller" class="w-full border rounded p-2">
+                            <option value="PRIVATE">Частное лицо</option>
+                            <option value="COMPANY">Компания</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Состояние</label>
+                        <select name="itemType" class="w-full border rounded p-2">
+                            <option value="NEW">Новое</option>
+                            <option value="USED">Б/у</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Страна</label>
+                        <input name="country" class="w-full border rounded p-2" minlength="3" maxlength="64">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Город</label>
+                        <input name="city" class="w-full border rounded p-2" minlength="3" maxlength="64">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Адрес</label>
+                        <input name="address" class="w-full border rounded p-2" minlength="3" maxlength="64">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Имя</label>
+                        <input name="name" class="w-full border rounded p-2" minlength="3" maxlength="64">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Телефон</label>
+                        <input name="phone" type="tel" class="w-full border rounded p-2" minlength="3" maxlength="64">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Email</label>
+                        <input name="email" type="email" class="w-full border rounded p-2" minlength="3" maxlength="64">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Текущие фото</label>
+                        <div id="current-photos"></div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Добавить новые фото</label>
+                        <input id="new-photos" type="file" multiple accept="image/*" class="w-full">
+                    </div>
+                    <div class="flex justify-end space-x-2">
+                        <button type="button" onclick="document.getElementById('edit-ad-form').classList.add('hidden')" class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">Отмена</button>
+                        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Сохранить</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-bold mb-4">RoboMarket</h3>
+                    <p class="text-gray-400 text-sm">Лучшая площадка для покупки и продажи товаров и услуг. Безопасные сделки и тысячи довольных пользователей.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">О компании</h3>
+                    <ul class="space-y-2">
+                        <li><a href="about-us.html" class="text-gray-400 hover:text-white text-sm">О нас</a></li>
+                        <li><a href="advertising.html" class="text-gray-400 hover:text-white text-sm">Реклама на сайте</a></li>
+                        <li><a href="vacancies.html" class="text-gray-400 hover:text-blue-400 text-sm">Вакансии</a></li>
+                        <li><a href="help.html" class="text-gray-400 hover:text-white text-sm">Помощь</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Контакты</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-gray-400 mt-1 mr-2"></i>
+                            <span class="text-gray-400 text-sm">Ташкент, Узбекистан</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone-alt text-gray-400 mt-1 mr-2"></i>
+                            <span class="text-gray-400 text-sm">+998 71 123 45 67</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope text-gray-400 mt-1 mr-2"></i>
+                            <span class="text-gray-400 text-sm">support@robomarket.uz</span>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Скачать наше приложение</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <a href="https://play.google.com/store" target="_blank" class="flex items-center justify-right">
+                            <img src="/res/android.svg" alt="Google Play" style="height: 45px; width: 200px; max-width: 150px;">
+                        </a>
+                        <a href="https://www.apple.com/app-store/" target="_blank" class="flex items-center justify-right">
+                            <img src="/res/ios.svg" alt="App Store" style="height: 45px; width: 200px; max-width: 150px;">
+                        </a>
+                        <a href="https://appgallery.huawei.com/" target="_blank" class="flex items-center justify-right">
+                            <div class="bg-white p-1 rounded overflow-hidden" style="width: 150px; height: 45px;">
+                                <img src="res/huawei.svg" alt="AppGallery" style="height: 45px; width: 200px; object-fit: contain;">
+                            </div>
+                        </a>
+                        <a href="https://www.microsoft.com/store/apps" target="_blank" class="flex items-center justify-right">
+                            <div class="bg-white p-1 rounded overflow-hidden" style="width: 150px; height: 45px;">
+                                <img src="/res/microsoft.svg" alt="Microsoft Store" style="height: 40px; width: 150px; object-fit: contain;">
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">© 2025 RoboMarket. Все права защищены.</p>
+                <div class="flex space-x-4">
+                    <a href="https://vk.com/programist_drevn1y" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-vk text-xl"></i>
+                    </a>
+                    <a href="https://t.me/drevn1y" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-telegram text-xl"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@_drevn1y_" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-youtube text-xl"></i>
+                    </a>
+                    <a href="https://www.instagram.com/sardorbek_asilov/" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-lg border-t border-gray-200">
+        <div class="flex justify-around py-3">
+            <a href="index.html" class="flex flex-col items-center text-gray-600">
+                <i class="fas fa-home text-xl"></i>
+                <span class="text-xs mt-1">Главная</span>
+            </a>
+            <a href="search.html" class="flex flex-col items-center text-gray-600">
+                <i class="fas fa-search text-xl"></i>
+                <span class="text-xs mt-1">Поиск</span>
+            </a>
+            <a href="new-ad.html" class="flex flex-col items-center text-gray-600">
+                <i class="far fa-plus-square text-xl"></i>
+                <span class="text-xs mt-1">Добавить</span>
+            </a>
+            <a href="favorites.html" class="flex flex-col items-center text-gray-600">
+                <i class="far fa-heart text-xl"></i>
+                <span class="text-xs mt-1">Избранное</span>
+            </a>
+            <a href="profile.html" class="flex flex-col items-center text-blue-600">
+                <i class="far fa-user text-xl"></i>
+                <span class="text-xs mt-1">Профиль</span>
+            </a>
+        </div>
+    </div>
+
+    <script src="profile.js"></script>
+</body>
+</html>	

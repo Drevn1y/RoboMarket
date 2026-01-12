@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoboMarket | Робот-пылесос RoboClean X5</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gallery-image {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .gallery-image:hover {
+            transform: scale(1.02);
+        }
+        .fullscreen-gallery {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .fullscreen-image {
+            max-width: 90%;
+            max-height: 90%;
+        }
+        .close-gallery {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 35px;
+            cursor: pointer;
+        }
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 15px;
+            border-radius: 50%;
+        }
+        .prev {
+            left: 30px;
+        }
+        .next {
+            right: 30px;
+        }
+        .similar-ad:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .contact-button {
+            transition: all 0.3s ease;
+        }
+        .contact-button:hover {
+            transform: translateY(-2px);
+        }
+        .robot-icon {
+            position: relative;
+        }
+        .robot-icon::before,
+        .robot-icon::after {
+            content: "";
+            position: absolute;
+            top: -8px;
+            width: 8px;
+            height: 12px;
+            background-color: currentColor;
+            border-radius: 2px;
+        }
+        .robot-icon::before {
+            left: -8px;
+            transform: rotate(-20deg);
+        }
+        .robot-icon::after {
+            right: -8px;
+            transform: rotate(20deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                <div class="flex items-center justify-between mb-3 md:mb-0">
+                    <a href="index.html" class="flex items-center">
+                        <div class="robot-icon text-2xl mr-2 relative">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <span class="text-xl font-bold">RoboMarket</span>
+                    </a>
+                    <button class="md:hidden text-xl" id="mobile-menu-button">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+                
+                <!-- Поле поиска для десктопа -->
+                <div class="hidden md:flex flex-1 mx-4">
+                    <div class="relative w-full flex">
+                        <input type="text" placeholder="Я ищу..." 
+                            class="flex-grow py-2 px-4 rounded-l-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button class="px-4 bg-blue-700 rounded-r-full hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="index.html" class="hover:text-blue-200 flex items-center">
+                        <i class="fas fa-home mr-1"></i>
+                        <span>Главная</span>
+                    </a>
+                    <a href="favorites.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-heart mr-1"></i>
+                        <span>Избранное</span>
+                    </a>
+                    <a href="notifications.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-bell mr-1"></i>
+                        <span>Уведомления</span>
+                    </a>
+                    <a href="profile.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-user mr-1"></i>
+                        <span>Профиль</span>
+                    </a>
+                    <a href="new-ad.html" class="bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded-full font-medium">
+                        <i class="fas fa-plus mr-1"></i>
+                        <span>Подать объявление</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <!-- Mobile Menu (hidden by default) -->
+            <div class="hidden md:hidden mt-4 pt-4 border-t border-blue-500" id="mobile-menu">
+                <div class="flex flex-col space-y-3">
+                    <a href="index.html" class="hover:text-blue-200 flex items-center">
+                        <i class="fas fa-home mr-3"></i>
+                        <span>Главная</span>
+                    </a>
+                    <a href="favorites.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-heart mr-3"></i>
+                        <span>Избранное</span>
+                    </a>
+                    <a href="notifications.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-bell mr-3"></i>
+                        <span>Уведомления</span>
+                    </a>
+                    <a href="profile.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-user mr-3"></i>
+                        <span>Профиль</span>
+                    </a>
+                    <a href="new-ad.html" class="bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded-full font-medium text-center">
+                        <i class="fas fa-plus mr-1"></i>
+                        <span>Подать объявление</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6">
+        <!-- Ad Details -->
+        <div class="flex flex-col lg:flex-row gap-6 mb-8">
+            <!-- Gallery -->
+            <div class="lg:w-2/3">
+                <!-- Main Image -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden mb-4">
+                    <img id="main-image" src="https://source.unsplash.com/random/800x600/?robot,vacuum" 
+                         alt="Робот-пылесос RoboClean X5" 
+                         class="w-full h-96 object-cover cursor-pointer gallery-image">
+                </div>
+                
+                <!-- Thumbnails -->
+                <div class="grid grid-cols-5 gap-2">
+                    <!-- Gallery thumbnails will be loaded dynamically -->
+                </div>
+            </div>
+            
+            <!-- Ad Info -->
+            <div class="lg:w-1/3">
+                <div class="bg-white rounded-lg shadow-md p-6 sticky top-4">
+                    <!-- Status and Actions -->
+                    <div class="flex justify-between items-start mb-4">
+                        <h1 id="item-title" class="text-2xl font-bold mb-2">Робот-пылесос RoboClean X5</h1>
+                        <button id="favorite-button" class="text-gray-400 hover:text-red-500 text-xl">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                    
+                    
+                    
+                    <!-- Price -->
+                    <div class="mb-6">
+                        <div class="flex items-end mb-1">
+                            <span id="item-price" class="text-3xl font-bold text-blue-600 mr-2">5 000 000 UZS</span>
+                        </div>
+                    </div>
+                    
+                    
+                    
+                    <!-- Seller Info -->
+                    <div class="mb-6 border-b border-gray-200 pb-6">
+                        <h3 class="font-bold mb-2">Продавец</h3>
+                        <div id="seller-info" class="flex items-center mb-3">
+                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-user text-blue-600"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium">Иван Петров</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button id="show-phone" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg contact-button">
+                                <i class="fas fa-phone-alt mr-2"></i> Показать телефон
+                            </button>
+                            <button id="show-email" class="bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 px-4 rounded-lg contact-button">
+                                <i class="fas fa-envelope mr-2"></i> Написать
+                            </button>
+                        </div>
+                        <div id="phone-number" class="hidden mt-3 text-center">
+                            <p class="font-medium text-lg">+7 123 456-78-90</p>
+                        </div>
+                        <div id="email-address" class="hidden mt-3 text-center">
+                            <p class="font-medium text-lg">ivan.petrov@example.com</p>
+                        </div>
+                    </div>
+                    
+                    
+                    
+                    <!-- Safety Tips -->
+                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-exclamation-triangle text-yellow-400"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-yellow-700">
+                                    <strong>Будьте осторожны!</strong> Не переводите деньги заранее и не сообщайте данные карт. 
+                                    Встречайтесь лично для проверки товара.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Description -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-xl font-bold mb-4">Описание</h2>
+            <div class="prose max-w-none">
+                <p id="item-description">Продается новый робот-пылесос RoboClean X5 с функцией влажной уборки. В комплекте все оригинальные аксессуары, гарантия 1 год.</p>
+                
+                <div id="item-details">
+                    <h3 class="font-bold mt-4">Характеристики:</h3>
+                    <ul class="list-disc pl-5">
+                        <li>Тип уборки: сухая и влажная</li>
+                        <li>Площадь уборки: до 120 м²</li>
+                        <li>Время работы: до 120 минут</li>
+                        <li>Управление: со смартфона (iOS/Android)</li>
+                        <li>Навигация: лазерная (LDS)</li>
+                        <li>Объем пылесборника: 0.5 л</li>
+                        <li>Объем бака для воды: 0.3 л</li>
+                        <li>Автоматическая зарядка</li>
+                        <li>Голосовое управление (Алиса, Google Assistant)</li>
+                    </ul>
+                </div>
+                
+                
+            </div>
+        </div>
+        
+        <!-- Similar Ads -->
+        <section class="mb-8">
+            <h2 class="text-xl font-bold mb-4">Похожие объявления</h2>
+            
+            <div id="similar-items" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Similar Ad 1 -->
+                <a href="#" class="bg-white rounded-lg overflow-hidden shadow-md similar-ad transition-all duration-300">
+                    <div class="relative">
+                        <img src="https://source.unsplash.com/random/300x200/?robot,vacuum,5" alt="Робот-пылесос" class="w-full h-48 object-cover">
+                        <button class="absolute top-2 right-2 bg-white bg-opacity-80 rounded-full p-2 text-gray-800 hover:text-red-500">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg mb-1 truncate">RoboClean X3</h3>
+                        <p class="text-gray-600 text-sm mb-2 line-clamp-2">Робот-пылесос с влажной уборкой, управление со смартфона</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-blue-600">18 500 ₽</span>
+                            <span class="text-gray-500 text-sm">Вчера</span>
+                        </div>
+                    </div>
+                </a>
+                
+                
+                      
+            </div>
+        </section>
+    </main>
+
+    <!-- Fullscreen Gallery -->
+    <div id="fullscreen-gallery" class="fullscreen-gallery">
+        <span class="close-gallery" onclick="closeGallery()">×</span>
+        <span class="gallery-nav prev" onclick="changeGalleryImage(-1)">&#10094;</span>
+        <img id="fullscreen-image" class="fullscreen-image" src="" alt="Изображение товара">
+        <span class="gallery-nav next" onclick="changeGalleryImage(1)">&#10095;</span>
+        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white text-sm">
+            <span id="image-counter">1 / 1</span>
+        </div>
+    </div>
+
+    
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- RoboMarket -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">RoboMarket</h3>
+                    <p class="text-gray-400 text-sm">Лучшая площадка для покупки и продажи товаров и услуг. Безопасные сделки и тысячи довольных пользователей.</p>
+                </div>
+                
+                <!-- Раздел "О компании" -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">О компании</h3>
+                    <ul class="space-y-2">
+                        <li><a href="about-us.html" class="text-gray-400 hover:text-white text-sm">О нас</a></li>
+                        <li><a href="advertising.html" class="text-gray-400 hover:text-white text-sm">Реклама на сайте</a></li>
+                        <li><a href="vacancies.html" class="text-gray-400 hover:text-blue-400 text-sm">Вакансии</a></li>
+                        <li><a href="help.html" class="text-gray-400 hover:text-white text-sm">Помощь</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Контакты -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Контакты</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-gray-400 mt-1 mr-2"></i>
+                            <span class="text-gray-400 text-sm">Ташкент, Узбекистан</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone-alt text-gray-400 mt-1 mr-2"></i>
+                            <span class="text-gray-400 text-sm">+998 71 123 45 67</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope text-gray-400 mt-1 mr-2"></i>
+                            <span class="text-gray-400 text-sm">support@robomarket.uz</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Мобильные приложения -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Скачать наше приложение</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <!-- Android -->
+                        <a href="https://play.google.com/store" target="_blank" class="flex items-center justify-right">
+                            <img src="res/android.svg" 
+                                alt="Google Play" 
+                                style="height: 45px; width: 200px; max-width: 150px;">
+                        </a>
+                        <!-- iOS -->
+                        <a href="https://www.apple.com/app-store/" target="_blank" class="flex items-center justify-right">
+                            <img src="res/ios.svg" 
+                                alt="App Store" 
+                                style="height: 45px; width: 200px; max-width: 150px;">
+                        </a>
+                        <!-- Huawei -->
+                        <a href="https://appgallery.huawei.com/" target="_blank" class="flex items-center justify-right">
+                            <div class="bg-white p-1 rounded overflow-hidden" style="width: 150px; height: 45px;">
+                                <img src="res/huawei.svg" 
+                                    alt="AppGallery" 
+                                    style="height: 45px; width: 200px; object-fit: contain;">
+                            </div>
+                        </a>
+                        <!-- Microsoft -->
+                        <a href="https://www.microsoft.com/store/apps" target="_blank" class="flex items-center justify-right">
+                            <div class="bg-white p-1 rounded overflow-hidden" style="width: 150px; height: 45px;">
+                                <img src="res/microsoft.svg" 
+                                    alt="Microsoft Store" 
+                                    style="height: 40px; width: 150px; object-fit: contain;">
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Нижняя часть футера -->
+            <div class="border-t border-gray-700 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">© 2025 RoboMarket. Все права защищены.</p>
+                <div class="flex space-x-4">
+                    <a href="https://vk.com/programist_drevn1y" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-vk text-xl"></i>
+                    </a>
+                    <a href="https://t.me/drevn1y" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-telegram text-xl"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@_drevn1y_" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-youtube text-xl"></i>
+                    </a>
+                    <a href="https://www.instagram.com/sardorbek_asilov/" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-lg border-t border-gray-200">
+        <div class="flex justify-around py-3">
+            <a href="index.html" class="flex flex-col items-center text-gray-600">
+                <i class="fas fa-home text-xl"></i>
+                <span class="text-xs mt-1">Главная</span>
+            </a>
+            <a href="search.html" class="flex flex-col items-center text-gray-600">
+                <i class="fas fa-search text-xl"></i>
+                <span class="text-xs mt-1">Поиск</span>
+            </a>
+            <a href="new-ad.html" class="flex flex-col items-center text-gray-600">
+                <i class="far fa-plus-square text-xl"></i>
+                <span class="text-xs mt-1">Добавить</span>
+            </a>
+            <a href="favorites.html" class="flex flex-col items-center text-gray-600">
+                <i class="far fa-heart text-xl"></i>
+                <span class="text-xs mt-1">Избранное</span>
+            </a>
+            <a href="profile.html" class="flex flex-col items-center text-gray-600">
+                <i class="far fa-user text-xl"></i>
+                <span class="text-xs mt-1">Профиль</span>
+            </a>
+        </div>
+    </div>
+
+    <script src="announcement.js"></script>
+
+</body>
+</html>

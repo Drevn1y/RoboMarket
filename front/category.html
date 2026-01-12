@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoboMarket | Электроника</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .category-icon {
+            transition: all 0.3s ease;
+        }
+        .category-icon:hover {
+            transform: scale(1.1);
+        }
+        .ad-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+        .dropdown-menu {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+        }
+        .robot-icon {
+            position: relative;
+        }
+        .robot-icon::before,
+        .robot-icon::after {
+            content: "";
+            position: absolute;
+            top: -8px;
+            width: 8px;
+            height: 12px;
+            background-color: currentColor;
+            border-radius: 2px;
+        }
+        .robot-icon::before {
+            left: -8px;
+            transform: rotate(-20deg);
+        }
+        .robot-icon::after {
+            right: -8px;
+            transform: rotate(20deg);
+        }
+        .pagination .active {
+            background-color: #2563eb;
+            color: white;
+        }
+        .pagination a:not(.active):hover {
+            background-color: #f1f5f9;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                <div class="flex items-center justify-between mb-3 md:mb-0">
+                    <a href="index.html" class="flex items-center">
+                        <div class="robot-icon text-2xl mr-2 relative">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <span class="text-xl font-bold">RoboMarket</span>
+                    </a>
+                    <button class="md:hidden text-xl" id="mobile-menu-button">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+                
+                <!-- Поле поиска для десктопа -->
+                <div class="hidden md:flex flex-1 mx-4">
+                    <div class="relative w-full flex">
+                        <input type="text" placeholder="Я ищу..." 
+                            class="flex-grow py-2 px-4 rounded-l-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button class="px-4 bg-blue-700 rounded-r-full hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="index.html" class="hover:text-blue-200 flex items-center">
+                        <i class="fas fa-home mr-1"></i>
+                        <span>Главная</span>
+                    </a>
+                    <a href="favorites.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-heart mr-1"></i>
+                        <span>Избранное</span>
+                    </a>
+                    <a href="notifications.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-bell mr-1"></i>
+                        <span>Уведомления</span>
+                    </a>
+                    <a href="profile.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-user mr-1"></i>
+                        <span>Профиль</span>
+                    </a>
+                    <a href="new-ad.html" class="bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded-full font-medium">
+                        <i class="fas fa-plus mr-1"></i>
+                        <span>Подать объявление</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <!-- Поле поиска для мобильной версии -->
+            <div class="mt-3 md:hidden">
+                <div class="relative flex">
+                    <input type="text" placeholder="Я ищу..." 
+                        class="flex-grow py-2 px-4 rounded-l-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button class="px-4 text-blue-600 rounded-r-full bg-white">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu (hidden by default) -->
+            <div class="hidden md:hidden mt-4 pt-4 border-t border-blue-500" id="mobile-menu">
+                <div class="flex flex-col space-y-3">
+                    <a href="index.html" class="hover:text-blue-200 flex items-center">
+                        <i class="fas fa-home mr-3"></i>
+                        <span>Главная</span>
+                    </a>
+                    <a href="favorites.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-heart mr-3"></i>
+                        <span>Избранное</span>
+                    </a>
+                    <a href="notifications.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-bell mr-3"></i>
+                        <span>Уведомления</span>
+                    </a>
+                    <a href="profile.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-user mr-3"></i>
+                        <span>Профиль</span>
+                    </a>
+                    <a href="new-ad.html" class="bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded-full font-medium text-center">
+                        <i class="fas fa-plus mr-1"></i>
+                        <span>Подать объявление</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6">
+        <!-- Breadcrumbs -->
+        <div class="flex items-center text-sm text-gray-600 mb-6">
+            <a href="index.html" class="hover:text-blue-600">Главная</a>
+            <span class="mx-2">/</span>
+            <span class="text-blue-600">Электроника</span>
+        </div>
+
+        <!-- Page Title and Filters -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-4 md:mb-0">Электроника</h1>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Product 1 -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-md ad-card transition-all duration-300">
+                <div class="relative">
+                    <img src="https://source.unsplash.com/random/300x200/?iphone" alt="iPhone" class="w-full h-48 object-cover">
+                    <button class="absolute top-2 right-2 bg-white bg-opacity-80 rounded-full p-2 text-gray-800 hover:text-red-500">
+                        <i class="far fa-heart"></i>
+                    </button>
+                    <span class="absolute bottom-2 left-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">Новое</span>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-1 truncate">iPhone 14 Pro 256GB</h3>
+                    <p class="text-gray-600 text-sm mb-2 line-clamp-2">Новый, в оригинальной упаковке, гарантия 1 год, цвет Deep Purple</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-blue-600">95 000 ₽</span>
+                        <span class="text-gray-500 text-sm">Сегодня</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 2 -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-md ad-card transition-all duration-300">
+                <div class="relative">
+                    <img src="https://source.unsplash.com/random/300x200/?laptop" alt="Ноутбук" class="w-full h-48 object-cover">
+                    <button class="absolute top-2 right-2 bg-white bg-opacity-80 rounded-full p-2 text-gray-800 hover:text-red-500">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-1 truncate">MacBook Pro M2 13"</h3>
+                    <p class="text-gray-600 text-sm mb-2 line-clamp-2">16GB RAM, 512GB SSD, 10-core GPU, отличное состояние</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-blue-600">145 000 ₽</span>
+                        <span class="text-gray-500 text-sm">2 дня назад</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 3 -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-md ad-card transition-all duration-300">
+                <div class="relative">
+                    <img src="https://source.unsplash.com/random/300x200/?tv" alt="Телевизор" class="w-full h-48 object-cover">
+                    <button class="absolute top-2 right-2 bg-white bg-opacity-80 rounded-full p-2 text-gray-800 hover:text-red-500">
+                        <i class="far fa-heart"></i>
+                    </button>
+                    <span class="absolute bottom-2 left-2 bg-green-600 text-white text-xs px-2 py-1 rounded">Скидка</span>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-1 truncate">Samsung QLED 4K 55"</h3>
+                    <p class="text-gray-600 text-sm mb-2 line-clamp-2">Телевизор Smart TV, HDR, 2023 года, в идеальном состоянии</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-blue-600">65 000 ₽</span>
+                        <span class="text-gray-500 text-sm">Неделю назад</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 4 -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-md ad-card transition-all duration-300">
+                <div class="relative">
+                    <img src="https://source.unsplash.com/random/300x200/?camera" alt="Фотоаппарат" class="w-full h-48 object-cover">
+                    <button class="absolute top-2 right-2 bg-white bg-opacity-80 rounded-full p-2 text-gray-800 hover:text-red-500">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-1 truncate">Canon EOS R6 Mark II</h3>
+                    <p class="text-gray-600 text-sm mb-2 line-clamp-2">Фотоаппарат зеркальный, комплект с объективом 24-105mm</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-blue-600">210 000 ₽</span>
+                        <span class="text-gray-500 text-sm">3 дня назад</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 5 -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-md ad-card transition-all duration-300">
+                <div class="relative">
+                    <img src="https://source.unsplash.com/random/300x200/?headphones" alt="Наушники" class="w-full h-48 object-cover">
+                    <button class="absolute top-2 right-2 bg-white bg-opacity-80 rounded-full p-2 text-gray-800 hover:text-red-500">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-1 truncate">Sony WH-1000XM5</h3>
+                    <p class="text-gray-600 text-sm mb-2 line-clamp-2">Беспроводные наушники с шумоподавлением, новый</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-blue-600">32 000 ₽</span>
+                        <span class="text-gray-500 text-sm">Вчера</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 6 -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-md ad-card transition-all duration-300">
+                <div class="relative">
+                    <img src="https://source.unsplash.com/random/300x200/?playstation" alt="PlayStation" class="w-full h-48 object-cover">
+                    <button class="absolute top-2 right-2 bg-white bg-opacity-80 rounded-full p-2 text-gray-800 hover:text-red-500">
+                        <i class="far fa-heart"></i>
+                    </button>
+                    <span class="absolute bottom-2 left-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">Новое</span>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-1 truncate">PlayStation 5 + 2 игры</h3>
+                    <p class="text-gray-600 text-sm mb-2 line-clamp-2">Консоль новая, в комплекте 2 игры на выбор, гарантия</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-blue-600">75 000 ₽</span>
+                        <span class="text-gray-500 text-sm">Сегодня</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 7 -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-md ad-card transition-all duration-300">
+                <div class="relative">
+                    <img src="https://source.unsplash.com/random/300x200/?smartwatch" alt="Смарт-часы" class="w-full h-48 object-cover">
+                    <button class="absolute top-2 right-2 bg-white bg-opacity-80 rounded-full p-2 text-gray-800 hover:text-red-500">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-1 truncate">Apple Watch Series 8</h3>
+                    <p class="text-gray-600 text-sm mb-2 line-clamp-2">45mm, GPS+Cellular, цвет Midnight, полный комплект</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-blue-600">45 000 ₽</span>
+                        <span class="text-gray-500 text-sm">5 дней назад</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 8 -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-md ad-card transition-all duration-300">
+                <div class="relative">
+                    <img src="https://source.unsplash.com/random/300x200/?tablet" alt="Планшет" class="w-full h-48 object-cover">
+                    <button class="absolute top-2 right-2 bg-white bg-opacity-80 rounded-full p-2 text-gray-800 hover:text-red-500">
+                        <i class="far fa-heart"></i>
+                    </button>
+                    <span class="absolute bottom-2 left-2 bg-green-600 text-white text-xs px-2 py-1 rounded">Срочно</span>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-1 truncate">iPad Pro 12.9" M1</h3>
+                    <p class="text-gray-600 text-sm mb-2 line-clamp-2">256GB, Wi-Fi, 2021 год, идеальное состояние, с чехлом</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-blue-600">85 000 ₽</span>
+                        <span class="text-gray-500 text-sm">2 дня назад</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 9 -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-md ad-card transition-all duration-300">
+                <div class="relative">
+                    <img src="https://source.unsplash.com/random/300x200/?drone" alt="Дрон" class="w-full h-48 object-cover">
+                    <button class="absolute top-2 right-2 bg-white bg-opacity-80 rounded-full p-2 text-gray-800 hover:text-red-500">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-1 truncate">DJI Mavic 3 Pro</h3>
+                    <p class="text-gray-600 text-sm mb-2 line-clamp-2">Комплект Fly More, 3 камеры, 43 минуты полета, как новый</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-blue-600">210 000 ₽</span>
+                        <span class="text-gray-500 text-sm">Неделю назад</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 10 -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-md ad-card transition-all duration-300">
+                <div class="relative">
+                    <img src="https://source.unsplash.com/random/300x200/?keyboard" alt="Клавиатура" class="w-full h-48 object-cover">
+                    <button class="absolute top-2 right-2 bg-white bg-opacity-80 rounded-full p-2 text-gray-800 hover:text-red-500">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-1 truncate">Keychron K8 Pro</h3>
+                    <p class="text-gray-600 text-sm mb-2 line-clamp-2">Механическая клавиатура, Bluetooth, Hot-swappable, RGB</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-blue-600">12 000 ₽</span>
+                        <span class="text-gray-500 text-sm">3 дня назад</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 11 -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-md ad-card transition-all duration-300">
+                <div class="relative">
+                    <img src="https://source.unsplash.com/random/300x200/?monitor" alt="Монитор" class="w-full h-48 object-cover">
+                    <button class="absolute top-2 right-2 bg-white bg-opacity-80 rounded-full p-2 text-gray-800 hover:text-red-500">
+                        <i class="far fa-heart"></i>
+                    </button>
+                    <span class="absolute bottom-2 left-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">Новое</span>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-1 truncate">LG UltraFine 4K 27"</h3>
+                    <p class="text-gray-600 text-sm mb-2 line-clamp-2">Монитор для Mac, Thunderbolt 3, цветопередача P3, новый</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-blue-600">65 000 ₽</span>
+                        <span class="text-gray-500 text-sm">Сегодня</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 12 -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-md ad-card transition-all duration-300">
+                <div class="relative">
+                    <img src="https://source.unsplash.com/random/300x200/?speaker" alt="Колонка" class="w-full h-48 object-cover">
+                    <button class="absolute top-2 right-2 bg-white bg-opacity-80 rounded-full p-2 text-gray-800 hover:text-red-500">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-1 truncate">Sonos Era 300</h3>
+                    <p class="text-gray-600 text-sm mb-2 line-clamp-2">Умная колонка с Dolby Atmos, пространственным звуком, новая</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-blue-600">45 000 ₽</span>
+                        <span class="text-gray-500 text-sm">4 дня назад</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 13 -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-md ad-card transition-all duration-300">
+                <div class="relative">
+                    <img src="https://source.unsplash.com/random/300x200/?router" alt="Роутер" class="w-full h-48 object-cover">
+                    <button class="absolute top-2 right-2 bg-white bg-opacity-80 rounded-full p-2 text-gray-800 hover:text-red-500">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-1 truncate">ASUS RT-AX86U</h3>
+                    <p class="text-gray-600 text-sm mb-2 line-clamp-2">Игровой Wi-Fi 6 роутер, 5700 Мбит/с, 2.5G порт</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-blue-600">18 000 ₽</span>
+                        <span class="text-gray-500 text-sm">Неделю назад</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 14 -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-md ad-card transition-all duration-300">
+                <div class="relative">
+                    <img src="https://source.unsplash.com/random/300x200/?printer" alt="Принтер" class="w-full h-48 object-cover">
+                    <button class="absolute top-2 right-2 bg-white bg-opacity-80 rounded-full p-2 text-gray-800 hover:text-red-500">
+                        <i class="far fa-heart"></i>
+                    </button>
+                    <span class="absolute bottom-2 left-2 bg-green-600 text-white text-xs px-2 py-1 rounded">Скидка</span>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-1 truncate">HP LaserJet Pro</h3>
+                    <p class="text-gray-600 text-sm mb-2 line-clamp-2">Лазерный принтер, A4, двусторонняя печать, Wi-Fi</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-blue-600">25 000 ₽</span>
+                        <span class="text-gray-500 text-sm">2 дня назад</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 15 -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-md ad-card transition-all duration-300">
+                <div class="relative">
+                    <img src="https://source.unsplash.com/random/300x200/?xbox" alt="Xbox" class="w-full h-48 object-cover">
+                    <button class="absolute top-2 right-2 bg-white bg-opacity-80 rounded-full p-2 text-gray-800 hover:text-red-500">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-1 truncate">Xbox Series X 1TB</h3>
+                    <p class="text-gray-600 text-sm mb-2 line-clamp-2">Консоль + 2 геймпада + 3 игры, гарантия, идеальное состояние</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-blue-600">65 000 ₽</span>
+                        <span class="text-gray-500 text-sm">5 дней назад</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 16 -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-md ad-card transition-all duration-300">
+                <div class="relative">
+                    <img src="https://source.unsplash.com/random/300x200/?ssd" alt="SSD" class="w-full h-48 object-cover">
+                    <button class="absolute top-2 right-2 bg-white bg-opacity-80 rounded-full p-2 text-gray-800 hover:text-red-500">
+                        <i class="far fa-heart"></i>
+                    </button>
+                    <span class="absolute bottom-2 left-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">Новое</span>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-1 truncate">Samsung 980 Pro 2TB</h3>
+                    <p class="text-gray-600 text-sm mb-2 line-clamp-2">NVMe SSD, PCIe 4.0, 7000 МБ/с, новый в упаковке</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-blue-600">18 000 ₽</span>
+                        <span class="text-gray-500 text-sm">Сегодня</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="flex justify-center mt-8">
+            <div class="pagination flex space-x-1">
+                <a href="#" class="px-3 py-1 rounded-md border border-gray-300">&laquo;</a>
+                <a href="#" class="px-3 py-1 rounded-md border border-gray-300 active">1</a>
+                <a href="#" class="px-3 py-1 rounded-md border border-gray-300">2</a>
+                <a href="#" class="px-3 py-1 rounded-md border border-gray-300">3</a>
+                <a href="#" class="px-3 py-1 rounded-md border border-gray-300">4</a>
+                <a href="#" class="px-3 py-1 rounded-md border border-gray-300">5</a>
+                <a href="#" class="px-3 py-1 rounded-md border border-gray-300">&raquo;</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- RoboMarket -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">RoboMarket</h3>
+                    <p class="text-gray-400 text-sm">Лучшая площадка для покупки и продажи товаров и услуг. Безопасные сделки и тысячи довольных пользователей.</p>
+                </div>
+                
+                <!-- Раздел "О компании" -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">О компании</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm">О нас</a></li>
+                        <li><a href="advertising.html" class="text-gray-400 hover:text-white text-sm">Реклама на сайте</a></li>
+                        <li><a href="vacancies.html" class="text-gray-400 hover:text-blue-400 text-sm">Вакансии</a></li>
+                        <li><a href="help.html" class="text-gray-400 hover:text-white text-sm">Помощь</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Контакты -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Контакты</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-gray-400 mt-1 mr-2"></i>
+                            <span class="text-gray-400 text-sm">Ташкент, Узбекистан</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone-alt text-gray-400 mt-1 mr-2"></i>
+                            <span class="text-gray-400 text-sm">+998 71 123 45 67</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope text-gray-400 mt-1 mr-2"></i>
+                            <span class="text-gray-400 text-sm">support@robomarket.uz</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Мобильные приложения -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Скачать наше приложение</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <!-- Android -->
+                        <a href="https://play.google.com/store" target="_blank" class="flex items-center justify-right">
+                            <img src="../res/download/android.svg" 
+                                alt="Google Play" 
+                                style="height: 45px; width: 200px; max-width: 150px;">
+                        </a>
+                        <!-- iOS -->
+                        <a href="https://www.apple.com/app-store/" target="_blank" class="flex items-center justify-right">
+                            <img src="../res/download/ios.svg" 
+                                alt="App Store" 
+                                style="height: 45px; width: 200px; max-width: 150px;">
+                        </a>
+                        <!-- Huawei -->
+                        <a href="https://appgallery.huawei.com/" target="_blank" class="flex items-center justify-right">
+                            <div class="bg-white p-1 rounded overflow-hidden" style="width: 150px; height: 45px;">
+                                <img src="../res/download/huawei.svg" 
+                                    alt="AppGallery" 
+                                    style="height: 45px; width: 200px; object-fit: contain;">
+                            </div>
+                        </a>
+                        <!-- Microsoft -->
+                        <a href="https://www.microsoft.com/store/apps" target="_blank" class="flex items-center justify-right">
+                            <div class="bg-white p-1 rounded overflow-hidden" style="width: 150px; height: 45px;">
+                                <img src="../res/download/microsoft.svg" 
+                                    alt="Microsoft Store" 
+                                    style="height: 40px; width: 150px; object-fit: contain;">
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Нижняя часть футера -->
+            <div class="border-t border-gray-700 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">© 2025 RoboMarket. Все права защищены.</p>
+                <div class="flex space-x-4">
+                    <a href="https://vk.com/programist_drevn1y" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-vk text-xl"></i>
+                    </a>
+                    <a href="https://t.me/drevn1y" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-telegram text-xl"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@_drevn1y_" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-youtube text-xl"></i>
+                    </a>
+                    <a href="https://www.instagram.com/sardorbek_asilov/" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-lg border-t border-gray-200">
+        <div class="flex justify-around py-3">
+            <a href="index.html" class="flex flex-col items-center text-gray-600">
+                <i class="fas fa-home text-xl"></i>
+                <span class="text-xs mt-1">Главная</span>
+            </a>
+            <a href="#" class="flex flex-col items-center text-gray-600">
+                <i class="fas fa-search text-xl"></i>
+                <span class="text-xs mt-1">Поиск</span>
+            </a>
+            <a href="new-ad.html" class="flex flex-col items-center text-gray-600">
+                <i class="far fa-plus-square text-xl"></i>
+                <span class="text-xs mt-1">Добавить</span>
+            </a>
+            <a href="favorites.html" class="flex flex-col items-center text-gray-600">
+                <i class="far fa-heart text-xl"></i>
+                <span class="text-xs mt-1">Избранное</span>
+            </a>
+            <a href="profile.html" class="flex flex-col items-center text-gray-600">
+                <i class="far fa-user text-xl"></i>
+                <span class="text-xs mt-1">Профиль</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Ad card click
+        document.querySelectorAll('.ad-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const title = this.querySelector('h3').textContent;
+                alert(`Открыть объявление: ${title}`);
+            });
+        });
+
+        // Pagination click
+        document.querySelectorAll('.pagination a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (!this.classList.contains('active')) {
+                    document.querySelector('.pagination a.active').classList.remove('active');
+                    this.classList.add('active');
+                    alert(`Переход на страницу: ${this.textContent}`);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoboMarket | Условия и Политика</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .robot-icon {
+            position: relative;
+        }
+        .robot-icon::before,
+        .robot-icon::after {
+            content: "";
+            position: absolute;
+            top: -8px;
+            width: 8px;
+            height: 12px;
+            background-color: currentColor;
+            border-radius: 2px;
+        }
+        .robot-icon::before {
+            left: -8px;
+            transform: rotate(-20deg);
+        }
+        .robot-icon::after {
+            right: -8px;
+            transform: rotate(20deg);
+        }
+        .policy-section {
+            scroll-margin-top: 100px;
+        }
+        .toc-item {
+            transition: all 0.2s ease;
+        }
+        .toc-item:hover {
+            color: #3b82f6;
+            transform: translateX(5px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                <div class="flex items-center justify-between mb-3 md:mb-0">
+                    <a href="index.html" class="flex items-center">
+                        <div class="robot-icon text-2xl mr-2 relative">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <span class="text-xl font-bold">RoboMarket</span>
+                    </a>
+                    <button class="md:hidden text-xl" id="mobile-menu-button">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+                
+                <!-- Поле поиска для десктопа -->
+                <div class="hidden md:flex flex-1 mx-4">
+                    <div class="relative w-full flex">
+                        <input type="text" placeholder="Я ищу..." 
+                            class="flex-grow py-2 px-4 rounded-l-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button class="px-4 bg-blue-700 rounded-r-full hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <nav class="hidden md:flex items-center space-x-6">
+                    <!-- Главная (активная) -->
+                    <a href="index.html" class="hover:text-blue-200 flex items-center">
+                        <i class="fas fa-home mr-1"></i>
+                        <span>Главная</span>
+                    </a>
+                    <a href="favorites.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-heart mr-1"></i>
+                        <span>Избранное</span>
+                    </a>
+                    <a href="notifications.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-bell mr-1"></i>
+                        <span>Уведомления</span>
+                    </a>
+                    <a href="profile.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-user mr-1"></i>
+                        <span>Профиль</span>
+                    </a>
+                    <a href="new-ad.html" class="bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded-full font-medium">
+                        <i class="fas fa-plus mr-1"></i>
+                        <span>Подать объявление</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <!-- Mobile Menu (hidden by default) -->
+            <div class="hidden md:hidden mt-4 pt-4 border-t border-blue-500" id="mobile-menu">
+                <div class="flex flex-col space-y-3">
+                    <!-- Главная (активная) -->
+                    <a href="index.html" class="hover:text-blue-200 flex items-center">
+                        <i class="fas fa-home mr-3"></i>
+                        <span>Главная</span>
+                    </a>
+                    <a href="favorites.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-heart mr-3"></i>
+                        <span>Избранное</span>
+                    </a>
+                    <a href="notifications.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-bell mr-3"></i>
+                        <span>Уведомления</span>
+                    </a>
+                    <a href="profile.html" class="text-blue-200 flex items-center">
+                        <i class="far fa-user mr-3"></i>
+                        <span>Профиль</span>
+                    </a>
+                    <a href="new-ad.html" class="hover:bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded-full font-medium text-center">
+                        <i class="fas fa-plus mr-1"></i>
+                        <span>Подать объявление</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Table of Contents -->
+            <div class="lg:hidden sticky-toc">
+            <button id="toc-toggle" class="w-full text-left font-bold text-lg py-2 mobile-collapsible">
+                Содержание
+            </button>
+            <div id="toc-content" class="mobile-content">
+                <ul class="space-y-2 pl-4 pt-2">
+                    <li><a href="#terms" class="block py-1 text-blue-600">Условия использования</a></li>
+                    <li><a href="#account" class="block py-1 text-gray-700 pl-4">1. Учетные записи</a></li>
+                    <li><a href="#content" class="block py-1 text-gray-700 pl-4">2. Размещение контента</a></li>
+                    <li><a href="#prohibited" class="block py-1 text-gray-700 pl-4">3. Запрещенные товары</a></li>
+                    <li><a href="#privacy" class="block py-1 text-blue-600 mt-2">Политика конфиденциальности</a></li>
+                    <li><a href="#data-collection" class="block py-1 text-gray-700 pl-4">1. Сбор данных</a></li>
+                    <li><a href="#data-use" class="block py-1 text-gray-700 pl-4">2. Использование данных</a></li>
+                    <li><a href="#cookies" class="block py-1 text-gray-700 pl-4">3. Файлы cookie</a></li>
+                    <li><a href="#security" class="block py-1 text-gray-700 pl-4">4. Безопасность</a></li>
+                    <li><a href="#changes" class="block py-1 text-gray-700 pl-4">5. Изменения политики</a></li>
+                </ul>
+            </div>
+        </div>
+
+
+            <!-- Content -->
+            <div class="lg:w-3/4">
+                <!-- Terms of Service -->
+                <section id="terms" class="policy-section bg-white p-6 rounded-lg shadow-sm mb-8">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-blue-100 p-3 rounded-full mr-4">
+                            <i class="fas fa-file-contract text-blue-600 text-xl"></i>
+                        </div>
+                        <h1 class="text-2xl font-bold text-gray-800">Условия использования RoboMarket</h1>
+                    </div>
+                    
+                    <p class="text-gray-600 mb-6">Последнее обновление: 28 июля 2025 года</p>
+                    
+                    <p class="text-gray-700 mb-6">
+                        Добро пожаловать на RoboMarket! Эти условия использования регулируют ваш доступ и использование нашего сервиса.
+                        Пожалуйста, внимательно прочитайте эти условия перед использованием нашего сайта.
+                    </p>
+                    
+                    <article id="account" class="mb-8">
+                        <h2 class="text-xl font-bold mb-4 text-gray-800">1. Учетные записи пользователей</h2>
+                        <p class="text-gray-700 mb-4">
+                            Для размещения объявлений и использования некоторых функций сайта требуется регистрация. Вы обязаны:
+                        </p>
+                        <ul class="list-disc pl-6 space-y-2 text-gray-700 mb-4">
+                            <li>Предоставлять точную и актуальную информацию при регистрации</li>
+                            <li>Не передавать свои учетные данные третьим лицам</li>
+                            <li>Не создавать несколько аккаунтов для одного пользователя</li>
+                            <li>Не использовать аккаунты других пользователей</li>
+                        </ul>
+                        <p class="text-gray-700">
+                            Мы оставляем за собой право приостанавливать или удалять аккаунты, нарушающие эти правила, без предварительного уведомления.
+                        </p>
+                    </article>
+                    
+                    <article id="content" class="mb-8">
+                        <h2 class="text-xl font-bold mb-4 text-gray-800">2. Размещение контента</h2>
+                        <p class="text-gray-700 mb-4">
+                            Размещая объявления на RoboMarket, вы соглашаетесь с тем, что:
+                        </p>
+                        <ul class="list-disc pl-6 space-y-2 text-gray-700 mb-4">
+                            <li>Вы обладаете всеми необходимыми правами на размещаемый контент</li>
+                            <li>Контент не нарушает права третьих лиц</li>
+                            <li>Все описания товаров точны и соответствуют действительности</li>
+                            <li>Цены указаны в национальной валюте (сум) и включают все налоги</li>
+                        </ul>
+                        <p class="text-gray-700">
+                            RoboMarket оставляет за собой право редактировать, перемещать или удалять любые объявления, которые нарушают эти условия.
+                        </p>
+                    </article>
+                    
+                    <article id="prohibited" class="mb-8">
+                        <h2 class="text-xl font-bold mb-4 text-gray-800">3. Запрещенные товары и услуги</h2>
+                        <p class="text-gray-700 mb-4">
+                            На RoboMarket запрещено размещение объявлений о следующих товарах и услугах:
+                        </p>
+                        <ul class="list-disc pl-6 space-y-2 text-gray-700">
+                            <li>Оружие, боеприпасы и взрывчатые вещества</li>
+                            <li>Наркотические вещества и препараты</li>
+                            <li>Контрафактная и пиратская продукция</li>
+                            <li>Живые животные (кроме разрешенных законом случаев)</li>
+                            <li>Товары, нарушающие авторские права</li>
+                            <li>Услуги, противоречащие законодательству Узбекистана</li>
+                        </ul>
+                    </article>
+                </section>
+
+                <!-- Privacy Policy -->
+                <section id="privacy" class="policy-section bg-white p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-green-100 p-3 rounded-full mr-4">
+                            <i class="fas fa-shield-alt text-green-600 text-xl"></i>
+                        </div>
+                        <h1 class="text-2xl font-bold text-gray-800">Политика конфиденциальности RoboMarket</h1>
+                    </div>
+                    
+                    <p class="text-gray-600 mb-6">Последнее обновление: 28 июля 2025 года</p>
+                    
+                    <p class="text-gray-700 mb-6">
+                        Ваша конфиденциальность важна для нас. В этой политике объясняется, какие личные данные мы собираем,
+                        как их используем и защищаем, а также какие у вас есть права в отношении ваших данных.
+                    </p>
+                    
+                    <article id="data-collection" class="mb-8">
+                        <h2 class="text-xl font-bold mb-4 text-gray-800">1. Какие данные мы собираем</h2>
+                        <p class="text-gray-700 mb-4">
+                            Мы можем собирать следующие типы информации:
+                        </p>
+                        <ul class="list-disc pl-6 space-y-2 text-gray-700">
+                            <li><strong>Персональные данные:</strong> имя, email, телефон, адрес при регистрации</li>
+                            <li><strong>Данные объявлений:</strong> описание товаров, цены, фотографии</li>
+                            <li><strong>Технические данные:</strong> IP-адрес, тип браузера, данные об устройстве</li>
+                            <li><strong>Данные использования:</strong> страницы, которые вы посещаете, время посещения</li>
+                            <li><strong>Геоданные:</strong> приблизительное местоположение на основе IP-адреса</li>
+                        </ul>
+                    </article>
+                    
+                    <article id="data-use" class="mb-8">
+                        <h2 class="text-xl font-bold mb-4 text-gray-800">2. Как мы используем ваши данные</h2>
+                        <p class="text-gray-700 mb-4">
+                            Собранные данные используются для следующих целей:
+                        </p>
+                        <ul class="list-disc pl-6 space-y-2 text-gray-700 mb-4">
+                            <li>Предоставление и улучшение наших услуг</li>
+                            <li>Персонализация вашего опыта на сайте</li>
+                            <li>Обработка транзакций и общение с пользователями</li>
+                            <li>Предотвращение мошенничества и обеспечение безопасности</li>
+                            <li>Анализ использования сайта для улучшения функционала</li>
+                            <li>Отправка маркетинговых сообщений (если вы дали согласие)</li>
+                        </ul>
+                        <p class="text-gray-700">
+                            Мы не продаем и не передаем ваши персональные данные третьим лицам для их маркетинговых целей без вашего явного согласия.
+                        </p>
+                    </article>
+                    
+                    <article id="cookies" class="mb-8">
+                        <h2 class="text-xl font-bold mb-4 text-gray-800">3. Файлы cookie и аналогичные технологии</h2>
+                        <p class="text-gray-700 mb-4">
+                            Мы используем файлы cookie и аналогичные технологии для:
+                        </p>
+                        <ul class="list-disc pl-6 space-y-2 text-gray-700 mb-4">
+                            <li>Авторизации пользователей</li>
+                            <li>Запоминания ваших предпочтений</li>
+                            <li>Анализа поведения на сайте</li>
+                            <li>Показа релевантной рекламы</li>
+                        </ul>
+                        <p class="text-gray-700">
+                            Вы можете управлять настройками cookie через параметры своего браузера, но это может повлиять на функциональность сайта.
+                        </p>
+                    </article>
+                    
+                    <article id="security" class="mb-8">
+                        <h2 class="text-xl font-bold mb-4 text-gray-800">4. Безопасность данных</h2>
+                        <p class="text-gray-700 mb-4">
+                            Мы принимаем разумные меры для защиты вашей информации:
+                        </p>
+                        <ul class="list-disc pl-6 space-y-2 text-gray-700 mb-4">
+                            <li>Использование шифрования (SSL/TLS) для передачи данных</li>
+                            <li>Регулярное обновление систем безопасности</li>
+                            <li>Ограниченный доступ к персональным данным сотрудников</li>
+                            <li>Регулярные проверки безопасности</li>
+                        </ul>
+                        <p class="text-gray-700">
+                            Однако ни один метод передачи через интернет или метод электронного хранения не является на 100% безопасным.
+                        </p>
+                    </article>
+                    
+                    <article id="changes" class="mb-4">
+                        <h2 class="text-xl font-bold mb-4 text-gray-800">5. Изменения в политике конфиденциальности</h2>
+                        <p class="text-gray-700 mb-4">
+                            Мы можем время от времени обновлять эту политику. О существенных изменениях мы уведомим вас:
+                        </p>
+                        <ul class="list-disc pl-6 space-y-2 text-gray-700">
+                            <li>Через уведомление на сайте</li>
+                            <li>По электронной почте (если вы зарегистрированы)</li>
+                            <li>Через push-уведомления в мобильном приложении</li>
+                        </ul>
+                    </article>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- RoboMarket -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">RoboMarket</h3>
+                    <p class="text-gray-400 text-sm">Лучшая площадка для покупки и продажи товаров и услуг. Безопасные сделки и тысячи довольных пользователей.</p>
+                </div>
+                
+                <!-- Раздел "О компании" -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">О компании</h3>
+                    <ul class="space-y-2">
+                        <li><a href="about-us.html" class="text-gray-400 hover:text-white text-sm">О нас</a></li>
+                        <li><a href="advertising.html" class="text-gray-400 hover:text-white text-sm">Реклама на сайте</a></li>
+                        <li><a href="vacancies.html" class="text-gray-400 hover:text-blue-400 text-sm">Вакансии</a></li>
+                        <li><a href="help.html" class="text-gray-400 hover:text-white text-sm">Помощь</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Контакты -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Контакты</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-gray-400 mt-1 mr-2"></i>
+                            <span class="text-gray-400 text-sm">Ташкент, Узбекистан</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone-alt text-gray-400 mt-1 mr-2"></i>
+                            <span class="text-gray-400 text-sm">+998 71 123 45 67</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope text-gray-400 mt-1 mr-2"></i>
+                            <span class="text-gray-400 text-sm">support@robomarket.uz</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Мобильные приложения -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Скачать наше приложение</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <!-- Android -->
+                        <a href="https://play.google.com/store" target="_blank" class="flex items-center justify-right">
+                            <img src="res/android.svg" 
+                                alt="Google Play" 
+                                style="height: 45px; width: 200px; max-width: 150px;">
+                        </a>
+                        <!-- iOS -->
+                        <a href="https://www.apple.com/app-store/" target="_blank" class="flex items-center justify-right">
+                            <img src="res/ios.svg" 
+                                alt="App Store" 
+                                style="height: 45px; width: 200px; max-width: 150px;">
+                        </a>
+                        <!-- Huawei -->
+                        <a href="https://appgallery.huawei.com/" target="_blank" class="flex items-center justify-right">
+                            <div class="bg-white p-1 rounded overflow-hidden" style="width: 150px; height: 45px;">
+                                <img src="res/huawei.svg" 
+                                    alt="AppGallery" 
+                                    style="height: 45px; width: 200px; object-fit: contain;">
+                            </div>
+                        </a>
+                        <!-- Microsoft -->
+                        <a href="https://www.microsoft.com/store/apps" target="_blank" class="flex items-center justify-right">
+                            <div class="bg-white p-1 rounded overflow-hidden" style="width: 150px; height: 45px;">
+                                <img src="res/microsoft.svg" 
+                                    alt="Microsoft Store" 
+                                    style="height: 40px; width: 150px; object-fit: contain;">
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Нижняя часть футера -->
+            <div class="border-t border-gray-700 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">© 2025 RoboMarket. Все права защищены.</p>
+                <div class="flex space-x-4">
+                    <a href="https://vk.com/programist_drevn1y" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-vk text-xl"></i>
+                    </a>
+                    <a href="https://t.me/drevn1y" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-telegram text-xl"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@_drevn1y_" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-youtube text-xl"></i>
+                    </a>
+                    <a href="https://www.instagram.com/sardorbek_asilov/" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-lg border-t border-gray-200">
+        <div class="flex justify-around py-3">
+            <a href="index.html" class="flex flex-col items-center text-gray-600">
+                <i class="fas fa-home text-xl"></i>
+                <span class="text-xs mt-1">Главная</span>
+            </a>
+            <a href="search.html" class="flex flex-col items-center text-gray-600">
+                <i class="fas fa-search text-xl"></i>
+                <span class="text-xs mt-1">Поиск</span>
+            </a>
+            <a href="new-ad.html" class="flex flex-col items-center text-gray-600">
+                <i class="far fa-plus-square text-xl"></i>
+                <span class="text-xs mt-1">Добавить</span>
+            </a>
+            <a href="favorites.html" class="flex flex-col items-center text-gray-600">
+                <i class="far fa-heart text-xl"></i>
+                <span class="text-xs mt-1">Избранное</span>
+            </a>
+            <a href="profile.html" class="flex flex-col items-center text-gray-600">
+                <i class="far fa-user text-xl"></i>
+                <span class="text-xs mt-1">Профиль</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+    <script>
+        document.querySelector('.bg-blue-700.rounded-r-full')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'search.html';
+        });
+    </script>
+</body>
+</html>

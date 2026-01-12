@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoboMarket | Все объявления</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .category-icon {
+            transition: all 0.3s ease;
+        }
+        .category-icon:hover {
+            transform: scale(1.1);
+        }
+        .ad-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+        .dropdown-menu {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+        }
+        .robot-icon {
+            position: relative;
+        }
+        .robot-icon::before,
+        .robot-icon::after {
+            content: "";
+            position: absolute;
+            top: -8px;
+            width: 8px;
+            height: 12px;
+            background-color: currentColor;
+            border-radius: 2px;
+        }
+        .robot-icon::before {
+            left: -8px;
+            transform: rotate(-20deg);
+        }
+        .robot-icon::after {
+            right: -8px;
+            transform: rotate(20deg);
+        }
+        .pagination .active {
+            background-color: #2563eb;
+            color: white;
+        }
+        .pagination a:not(.active):hover {
+            background-color: #f1f5f9;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                <div class="flex items-center justify-between mb-3 md:mb-0">
+                    <a href="index.html" class="flex items-center">
+                        <div class="robot-icon text-2xl mr-2 relative">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <span class="text-xl font-bold">RoboMarket</span>
+                    </a>
+                    <button class="md:hidden text-xl" id="mobile-menu-button">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+                
+                <!-- Поле поиска для десктопа -->
+                <div class="hidden md:flex flex-1 mx-4">
+                    <div class="relative w-full flex">
+                        <input type="text" placeholder="Я ищу..." 
+                            class="flex-grow py-2 px-4 rounded-l-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button class="px-4 bg-blue-700 rounded-r-full hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="index.html" class="hover:text-blue-200 flex items-center">
+                        <i class="fas fa-home mr-1"></i>
+                        <span>Главная</span>
+                    </a>
+                    <a href="favorites.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-heart mr-1"></i>
+                        <span>Избранное</span>
+                    </a>
+                    <a href="notifications.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-bell mr-1"></i>
+                        <span>Уведомления</span>
+                    </a>
+                    <a href="profile.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-user mr-1"></i>
+                        <span>Профиль</span>
+                    </a>
+                    <a href="new-ad.html" class="bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded-full font-medium">
+                        <i class="fas fa-plus mr-1"></i>
+                        <span>Подать объявление</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <!-- Mobile Menu (hidden by default) -->
+            <div class="hidden md:hidden mt-4 pt-4 border-t border-blue-500" id="mobile-menu">
+                <div class="flex flex-col space-y-3">
+                    <a href="index.html" class="hover:text-blue-200 flex items-center">
+                        <i class="fas fa-home mr-3"></i>
+                        <span>Главная</span>
+                    </a>
+                    <a href="favorites.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-heart mr-3"></i>
+                        <span>Избранное</span>
+                    </a>
+                    <a href="notifications.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-bell mr-3"></i>
+                        <span>Уведомления</span>
+                    </a>
+                    <a href="profile.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-user mr-3"></i>
+                        <span>Профиль</span>
+                    </a>
+                    <a href="new-ad.html" class="bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded-full font-medium text-center">
+                        <i class="fas fa-plus mr-1"></i>
+                        <span>Подать объявление</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-6">
+    <!-- Breadcrumbs -->
+    <div class="flex items-center text-sm text-gray-600 mb-6">
+        <a href="index.html" class="hover:text-blue-600">Главная</a>
+        <span class="mx-2">/</span>
+        <span class="text-blue-600">Объявления</span>
+    </div>
+
+    <!-- Заголовок -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+        <h1 class="text-2xl font-bold text-gray-800 mb-4 md:mb-0">Объявления</h1>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">
+        <!-- 🔽 сюда JS вставит объявления -->
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex justify-center mt-8">
+        <div class="pagination flex space-x-1"></div>
+    </div>
+</main>
+
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- RoboMarket -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">RoboMarket</h3>
+                    <p class="text-gray-400 text-sm">Лучшая площадка для покупки и продажи товаров и услуг. Безопасные сделки и тысячи довольных пользователей.</p>
+                </div>
+                
+                <!-- Раздел "О компании" -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">О компании</h3>
+                    <ul class="space-y-2">
+                        <li><a href="about-us.html" class="text-gray-400 hover:text-white text-sm">О нас</a></li>
+                        <li><a href="advertising.html" class="text-gray-400 hover:text-white text-sm">Реклама на сайте</a></li>
+                        <li><a href="vacancies.html" class="text-gray-400 hover:text-blue-400 text-sm">Вакансии</a></li>
+                        <li><a href="help.html" class="text-gray-400 hover:text-white text-sm">Помощь</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Контакты -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Контакты</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-gray-400 mt-1 mr-2"></i>
+                            <span class="text-gray-400 text-sm">Ташкент, Узбекистан</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone-alt text-gray-400 mt-1 mr-2"></i>
+                            <span class="text-gray-400 text-sm">+998 71 123 45 67</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope text-gray-400 mt-1 mr-2"></i>
+                            <span class="text-gray-400 text-sm">support@robomarket.uz</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Мобильные приложения -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Скачать наше приложение</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <!-- Android -->
+                        <a href="https://play.google.com/store" target="_blank" class="flex items-center justify-right">
+                            <img src="res/android.svg" 
+                                alt="Google Play" 
+                                style="height: 45px; width: 200px; max-width: 150px;">
+                        </a>
+                        <!-- iOS -->
+                        <a href="https://www.apple.com/app-store/" target="_blank" class="flex items-center justify-right">
+                            <img src="res/ios.svg" 
+                                alt="App Store" 
+                                style="height: 45px; width: 200px; max-width: 150px;">
+                        </a>
+                        <!-- Huawei -->
+                        <a href="https://appgallery.huawei.com/" target="_blank" class="flex items-center justify-right">
+                            <div class="bg-white p-1 rounded overflow-hidden" style="width: 150px; height: 45px;">
+                                <img src="res/huawei.svg" 
+                                    alt="AppGallery" 
+                                    style="height: 45px; width: 200px; object-fit: contain;">
+                            </div>
+                        </a>
+                        <!-- Microsoft -->
+                        <a href="https://www.microsoft.com/store/apps" target="_blank" class="flex items-center justify-right">
+                            <div class="bg-white p-1 rounded overflow-hidden" style="width: 150px; height: 45px;">
+                                <img src="res/microsoft.svg" 
+                                    alt="Microsoft Store" 
+                                    style="height: 40px; width: 150px; object-fit: contain;">
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Нижняя часть футера -->
+            <div class="border-t border-gray-700 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">© 2025 RoboMarket. Все права защищены.</p>
+                <div class="flex space-x-4">
+                    <a href="https://vk.com/programist_drevn1y" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-vk text-xl"></i>
+                    </a>
+                    <a href="https://t.me/drevn1y" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-telegram text-xl"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@_drevn1y_" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-youtube text-xl"></i>
+                    </a>
+                    <a href="https://www.instagram.com/sardorbek_asilov/" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-lg border-t border-gray-200">
+        <div class="flex justify-around py-3">
+            <a href="index.html" class="flex flex-col items-center text-gray-600">
+                <i class="fas fa-home text-xl"></i>
+                <span class="text-xs mt-1">Главная</span>
+            </a>
+            <a href="search.html" class="flex flex-col items-center text-gray-600">
+                <i class="fas fa-search text-xl"></i>
+                <span class="text-xs mt-1">Поиск</span>
+            </a>
+            <a href="new-ad.html" class="flex flex-col items-center text-gray-600">
+                <i class="far fa-plus-square text-xl"></i>
+                <span class="text-xs mt-1">Добавить</span>
+            </a>
+            <a href="favorites.html" class="flex flex-col items-center text-gray-600">
+                <i class="far fa-heart text-xl"></i>
+                <span class="text-xs mt-1">Избранное</span>
+            </a>
+            <a href="profile.html" class="flex flex-col items-center text-gray-600">
+                <i class="far fa-user text-xl"></i>
+                <span class="text-xs mt-1">Профиль</span>
+            </a>
+        </div>
+    </div>
+    <script src="announcements.js"></script>
+</body>
+</html>

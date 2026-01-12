@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoboMarket | Главная страница</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- ios app -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="RoboMarket">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <!-- android app -->
+    <meta name="theme-color" content="#2563EB">
+
+    <link rel="manifest" href="/manifest.json">
+
+    <style>
+        .category-icon {
+            transition: all 0.3s ease;
+        }
+        .category-icon:hover {
+            transform: scale(1.1);
+        }
+        .ad-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+        .dropdown-menu {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+        }
+        .robot-icon {
+            position: relative;
+        }
+        .robot-icon::before,
+        .robot-icon::after {
+            content: "";
+            position: absolute;
+            top: -8px;
+            width: 8px;
+            height: 12px;
+            background-color: currentColor;
+            border-radius: 2px;
+        }
+        .robot-icon::before {
+            left: -8px;
+            transform: rotate(-20deg);
+        }
+        .robot-icon::after {
+            right: -8px;
+            transform: rotate(20deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                <div class="flex items-center justify-between mb-3 md:mb-0">
+                    <a href="index.html" class="flex items-center">
+                        <div class="robot-icon text-2xl mr-2 relative">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <span class="text-xl font-bold">RoboMarket</span>
+                    </a>
+                    <button class="md:hidden text-xl" id="mobile-menu-button">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+                
+                <!-- Поле поиска для десктопа -->
+                <div class="hidden md:flex flex-1 mx-4">
+                    <div class="relative w-full flex">
+                        <input type="text" placeholder="Я ищу..." 
+                            class="flex-grow py-2 px-4 rounded-l-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button class="px-4 bg-blue-700 rounded-r-full hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <nav class="hidden md:flex items-center space-x-6">
+                    <!-- Главная (активная) -->
+                    <a href="index.html" class="text-blue-200 flex items-center">
+                        <i class="fas fa-home mr-1"></i>
+                        <span>Главная</span>
+                    </a>
+                    <a href="favorites.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-heart mr-1"></i>
+                        <span>Избранное</span>
+                    </a>
+                    <a href="notifications.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-bell mr-1"></i>
+                        <span>Уведомления</span>
+                    </a>
+                    <a href="profile.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-user mr-1"></i>
+                        <span>Профиль</span>
+                    </a>
+                    <a href="new-ad.html" class="bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded-full font-medium">
+                        <i class="fas fa-plus mr-1"></i>
+                        <span>Подать объявление</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <!-- Mobile Menu (hidden by default) -->
+            <div class="hidden md:hidden mt-4 pt-4 border-t border-blue-500" id="mobile-menu">
+                <div class="flex flex-col space-y-3">
+                    <!-- Главная (активная) -->
+                    <a href="index.html" class="text-blue-200 flex items-center">
+                        <i class="fas fa-home mr-3"></i>
+                        <span>Главная</span>
+                    </a>
+                    <a href="favorites.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-heart mr-3"></i>
+                        <span>Избранное</span>
+                    </a>
+                    <a href="notifications.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-bell mr-3"></i>
+                        <span>Уведомления</span>
+                    </a>
+                    <a href="profile.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-user mr-3"></i>
+                        <span>Профиль</span>
+                    </a>
+                    <a href="new-ad.html" class="bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded-full font-medium text-center">
+                        <i class="fas fa-plus mr-1"></i>
+                        <span>Подать объявление</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6">
+        <!-- Categories -->
+        <section class="mb-8">
+            <h2 class="text-xl font-bold mb-4 text-gray-800">Категории</h2>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            <a href="announcements.html?category=HOUSE" class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow flex flex-col items-center category-icon">
+                <div class="bg-green-100 p-3 rounded-full mb-2">
+                    <i class="fas fa-home text-green-600 text-xl"></i>
+                </div>
+                <span class="text-sm font-medium text-center">Недвижимость</span>
+            </a>
+            <a href="announcements.html?category=CHILDREN" class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow flex flex-col items-center category-icon">
+                <div class="bg-yellow-100 p-3 rounded-full mb-2">
+                    <i class="fas fa-child text-yellow-600 text-xl"></i>
+                </div>
+                <span class="text-sm font-medium text-center">Детский мир</span>
+            </a>
+            <a href="announcements.html?category=ELECTRONICS" class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow flex flex-col items-center category-icon">
+                <div class="bg-purple-100 p-3 rounded-full mb-2">
+                    <i class="fas fa-laptop text-purple-600 text-xl"></i>
+                </div>
+                <span class="text-sm font-medium text-center">Электроника</span>
+            </a>
+            <a href="announcements.html?category=TRANSPORT" class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow flex flex-col items-center category-icon">
+                <div class="bg-red-100 p-3 rounded-full mb-2">
+                    <i class="fas fa-bus text-red-600 text-xl"></i>
+                </div>
+                <span class="text-sm font-medium text-center">Транспорт</span>
+            </a>
+            <a href="announcements.html?category=FURNITURE" class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow flex flex-col items-center category-icon">
+                <div class="bg-pink-100 p-3 rounded-full mb-2">
+                    <i class="fas fa-couch text-pink-600 text-xl"></i>
+                </div>
+                <span class="text-sm font-medium text-center">Мебель</span>
+            </a>
+            <a href="announcements.html?category=ANIMAL" class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow flex flex-col items-center category-icon">
+                <div class="bg-indigo-100 p-3 rounded-full mb-2">
+                    <i class="fas fa-paw text-indigo-600 text-xl"></i>
+                </div>
+                <span class="text-sm font-medium text-center">Животные</span>
+            </a>
+            <a href="announcements.html?category=FREE" class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow flex flex-col items-center category-icon">
+                <div class="bg-orange-100 p-3 rounded-full mb-2">
+                    <i class="fas fa-wallet text-orange-600 text-xl"></i>
+                </div>
+                <span class="text-sm font-medium text-center">Отдам даром</span>
+            </a>
+            <a href="announcements.html?category=OTHER" class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow flex flex-col items-center category-icon">
+                <div class="bg-gray-100 p-3 rounded-full mb-2">
+                    <i class="fas fa-ellipsis-h text-gray-600 text-xl"></i>
+                </div>
+                <span class="text-sm font-medium text-center">Прочие</span>
+            </a>
+        </div>
+
+        </section>
+
+        <!-- Featured Ads -->
+        <section class="mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-800">Рекомендуем для вас</h2>
+                <a href="announcements.html" class="text-blue-600 hover:text-blue-800 text-sm font-medium">Смотреть все</a>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- 12 вывести на экран -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-md ad-card transition-all duration-300">
+                    <div class="relative">
+                        <img src="https://source.unsplash.com/random/300x200/?robot" alt="Робот" class="w-full h-48 object-cover">
+                        <button class="absolute top-2 right-2 bg-white bg-opacity-80 rounded-full p-2 text-gray-800 hover:text-red-500">
+                            <i class="far fa-heart"></i>
+                        </button>
+                        <span class="absolute bottom-2 left-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">Новое</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg mb-1 truncate">Робот-пылесос RoboClean X5</h3>
+                        <p class="text-gray-600 text-sm mb-2 line-clamp-2">Умная навигация, влажная уборка, управление со смартфона, работает до 120 минут</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-blue-600">24 990 ₽</span>
+                            <span class="text-gray-500 text-sm">Сегодня</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- RoboMarket -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">RoboMarket</h3>
+                    <p class="text-gray-400 text-sm">Лучшая площадка для покупки и продажи товаров и услуг. Безопасные сделки и тысячи довольных пользователей.</p>
+                </div>
+                
+                <!-- Раздел "О компании" -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">О компании</h3>
+                    <ul class="space-y-2">
+                        <li><a href="about-us.html" class="text-gray-400 hover:text-white text-sm">О нас</a></li>
+                        <li><a href="advertising.html" class="text-gray-400 hover:text-white text-sm">Реклама на сайте</a></li>
+                        <li><a href="vacancies.html" class="text-gray-400 hover:text-blue-400 text-sm">Вакансии</a></li>
+                        <li><a href="help.html" class="text-gray-400 hover:text-white text-sm">Помощь</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Контакты -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Контакты</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-gray-400 mt-1 mr-2"></i>
+                            <span class="text-gray-400 text-sm">Ташкент, Узбекистан</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone-alt text-gray-400 mt-1 mr-2"></i>
+                            <span class="text-gray-400 text-sm">+998 71 123 45 67</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope text-gray-400 mt-1 mr-2"></i>
+                            <span class="text-gray-400 text-sm">support@robomarket.uz</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Мобильные приложения -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Скачать наше приложение</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <!-- Android -->
+                        <a href="https://play.google.com/store" target="_blank" class="flex items-center justify-right">
+                            <img src="res/android.svg" 
+                                alt="Google Play" 
+                                style="height: 45px; width: 200px; max-width: 150px;">
+                        </a>
+                        <!-- iOS -->
+                        <a href="https://www.apple.com/app-store/" target="_blank" class="flex items-center justify-right">
+                            <img src="res/ios.svg" 
+                                alt="App Store" 
+                                style="height: 45px; width: 200px; max-width: 150px;">
+                        </a>
+                        <!-- Huawei -->
+                        <a href="https://appgallery.huawei.com/" target="_blank" class="flex items-center justify-right">
+                            <div class="bg-white p-1 rounded overflow-hidden" style="width: 150px; height: 45px;">
+                                <img src="res/huawei.svg" 
+                                    alt="AppGallery" 
+                                    style="height: 45px; width: 200px; object-fit: contain;">
+                            </div>
+                        </a>
+                        <!-- Microsoft -->
+                        <a href="https://www.microsoft.com/store/apps" target="_blank" class="flex items-center justify-right">
+                            <div class="bg-white p-1 rounded overflow-hidden" style="width: 150px; height: 45px;">
+                                <img src="res/microsoft.svg" 
+                                    alt="Microsoft Store" 
+                                    style="height: 40px; width: 150px; object-fit: contain;">
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Нижняя часть футера -->
+            <div class="border-t border-gray-700 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">© 2025 RoboMarket. Все права защищены.</p>
+                <div class="flex space-x-4">
+                    <a href="https://vk.com/programist_drevn1y" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-vk text-xl"></i>
+                    </a>
+                    <a href="https://t.me/drevn1y" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-telegram text-xl"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@_drevn1y_" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-youtube text-xl"></i>
+                    </a>
+                    <a href="https://www.instagram.com/sardorbek_asilov/" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-lg border-t border-gray-200">
+        <div class="flex justify-around py-3">
+            <a href="index.html" class="flex flex-col items-center text-blue-600">
+                <i class="fas fa-home text-xl"></i>
+                <span class="text-xs mt-1">Главная</span>
+            </a>
+            <a href="search.html" class="flex flex-col items-center text-gray-600">
+                <i class="fas fa-search text-xl"></i>
+                <span class="text-xs mt-1">Поиск</span>
+            </a>
+            <a href="new-ad.html" class="flex flex-col items-center text-gray-600">
+                <i class="far fa-plus-square text-xl"></i>
+                <span class="text-xs mt-1">Добавить</span>
+            </a>
+            <a href="favorites.html" class="flex flex-col items-center text-gray-600">
+                <i class="far fa-heart text-xl"></i>
+                <span class="text-xs mt-1">Избранное</span>
+            </a>
+            <a href="profile.html" class="flex flex-col items-center text-gray-600">
+                <i class="far fa-user text-xl"></i>
+                <span class="text-xs mt-1">Профиль</span>
+            </a>
+        </div>
+    </div>
+    <script src="index.js"></script>
+</body>
+</html>

@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoboMarket | Вакансии</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .category-icon {
+            transition: all 0.3s ease;
+        }
+        .category-icon:hover {
+            transform: scale(1.1);
+        }
+        .ad-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+        .dropdown-menu {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+        }
+        .robot-icon {
+            position: relative;
+        }
+        .robot-icon::before,
+        .robot-icon::after {
+            content: "";
+            position: absolute;
+            top: -8px;
+            width: 8px;
+            height: 12px;
+            background-color: currentColor;
+            border-radius: 2px;
+        }
+        .robot-icon::before {
+            left: -8px;
+            transform: rotate(-20deg);
+        }
+        .robot-icon::after {
+            right: -8px;
+            transform: rotate(20deg);
+        }
+        .vacancy-card {
+            transition: all 0.3s ease;
+        }
+        .vacancy-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                <div class="flex items-center justify-between mb-3 md:mb-0">
+                    <a href="index.html" class="flex items-center">
+                        <div class="robot-icon text-2xl mr-2 relative">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <span class="text-xl font-bold">RoboMarket</span>
+                    </a>
+                    <button class="md:hidden text-xl" id="mobile-menu-button">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+                
+                <!-- Поле поиска для десктопа -->
+                <div class="hidden md:flex flex-1 mx-4">
+                    <div class="relative w-full flex">
+                        <input type="text" placeholder="Я ищу..." 
+                            class="flex-grow py-2 px-4 rounded-l-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button class="px-4 bg-blue-700 rounded-r-full hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="index.html" class="hover:text-blue-200 flex items-center">
+                        <i class="fas fa-home mr-1"></i>
+                        <span>Главная</span>
+                    </a>
+                    <a href="favorites.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-heart mr-1"></i>
+                        <span>Избранное</span>
+                    </a>
+                    <a href="notifications.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-bell mr-1"></i>
+                        <span>Уведомления</span>
+                    </a>
+                    <a href="profile.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-user mr-1"></i>
+                        <span>Профиль</span>
+                    </a>
+                    <a href="new-ad.html" class="bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded-full font-medium">
+                        <i class="fas fa-plus mr-1"></i>
+                        <span>Подать объявление</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <!-- Поле поиска для мобильной версии -->
+            <div class="mt-3 md:hidden">
+                <div class="relative flex">
+                    <input type="text" placeholder="Я ищу..." 
+                        class="flex-grow py-2 px-4 rounded-l-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button class="px-4 text-blue-600 rounded-r-full bg-white">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu (hidden by default) -->
+            <div class="hidden md:hidden mt-4 pt-4 border-t border-blue-500" id="mobile-menu">
+                <div class="flex flex-col space-y-3">
+                    <a href="index.html" class="hover:text-blue-200 flex items-center">
+                        <i class="fas fa-home mr-3"></i>
+                        <span>Главная</span>
+                    </a>
+                    <a href="favorites.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-heart mr-3"></i>
+                        <span>Избранное</span>
+                    </a>
+                    <a href="notifications.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-bell mr-3"></i>
+                        <span>Уведомления</span>
+                    </a>
+                    <a href="profile.html" class="hover:text-blue-200 flex items-center">
+                        <i class="far fa-user mr-3"></i>
+                        <span>Профиль</span>
+                    </a>
+                    <a href="new-ad.html" class="bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded-full font-medium text-center">
+                        <i class="fas fa-plus mr-1"></i>
+                        <span>Подать объявление</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Breadcrumbs -->
+        <div class="flex items-center text-sm text-gray-600 mb-6">
+            <a href="index.html" class="hover:text-blue-600">Главная</a>
+            <span class="mx-2">/</span>
+            <span>Вакансии</span>
+        </div>
+
+        <!-- Page Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Вакансии в RoboMarket</h1>
+            <p class="text-gray-600">Присоединяйтесь к нашей команде и помогайте развивать лучшую площадку для покупок и продаж</p>
+        </div>
+
+        <!-- Vacancies Section -->
+        <section class="mb-12">
+            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">О работе в RoboMarket</h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <p class="text-gray-700 mb-4">RoboMarket - это динамично развивающаяся компания, которая создает удобную и безопасную площадку для покупок и продаж. Мы ценим инициативность, профессионализм и стремление к развитию.</p>
+                        <p class="text-gray-700">Наша команда - это талантливые специалисты, которые работают над созданием лучшего пользовательского опыта. Мы предлагаем интересные задачи, профессиональный рост и комфортные условия работы.</p>
+                    </div>
+                    <div class="bg-blue-50 rounded-lg p-6">
+                        <h3 class="font-bold text-blue-700 mb-3">Мы предлагаем:</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-blue-600 mt-1 mr-2"></i>
+                                <span class="text-gray-700">Конкурентную заработную плату</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-blue-600 mt-1 mr-2"></i>
+                                <span class="text-gray-700">Гибкий график работы</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-blue-600 mt-1 mr-2"></i>
+                                <span class="text-gray-700">Возможность профессионального роста</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-blue-600 mt-1 mr-2"></i>
+                                <span class="text-gray-700">Комфортный офис в центре города</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-blue-600 mt-1 mr-2"></i>
+                                <span class="text-gray-700">Корпоративные мероприятия и обучение</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Открытые вакансии</h2>
+            
+            <!-- Vacancy Cards - Все 6 вакансий в одной сетке -->
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Вакансия 1 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden vacancy-card">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">Senior Frontend-разработчик</h3>
+                            <span class="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full">Удалённо</span>
+                        </div>
+                        <div class="flex items-center text-gray-600 mb-4">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            <span class="mr-4">Ташкент или удалённо</span>
+                            <i class="fas fa-briefcase mr-2"></i>
+                            <span>Опыт от 3 лет</span>
+                        </div>
+                        <p class="text-gray-700 mb-4">Ищем опытного frontend-разработчика для работы над основным продуктом компании. Вам предстоит разрабатывать новые функции и улучшать пользовательский интерфейс.</p>
+                        <div class="mb-4">
+                            <h4 class="font-bold text-gray-800 mb-2">Требования:</h4>
+                            <ul class="list-disc list-inside text-gray-700 space-y-1">
+                                <li>Опыт работы с React, Redux, TypeScript</li>
+                                <li>Знание современных CSS-методологий (Tailwind, CSS-in-JS)</li>
+                                <li>Опыт работы с REST API</li>
+                                <li>Понимание принципов UI/UX</li>
+                            </ul>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-blue-600">от 2 000 $</span>
+                            <a href="#apply-modal" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">Откликнуться</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Вакансия 2 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden vacancy-card">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">Менеджер по продажам рекламы</h3>
+                            <span class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full">Офис</span>
+                        </div>
+                        <div class="flex items-center text-gray-600 mb-4">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            <span class="mr-4">Ташкент</span>
+                            <i class="fas fa-briefcase mr-2"></i>
+                            <span>Опыт от 1 года</span>
+                        </div>
+                        <p class="text-gray-700 mb-4">Нам нужен активный менеджер по продажам рекламных возможностей нашей платформы. Вам предстоит работать с существующими и новыми клиентами, предлагая им эффективные рекламные решения.</p>
+                        <div class="mb-4">
+                            <h4 class="font-bold text-gray-800 mb-2">Требования:</h4>
+                            <ul class="list-disc list-inside text-gray-700 space-y-1">
+                                <li>Опыт продаж digital-рекламы</li>
+                                <li>Навыки ведения переговоров</li>
+                                <li>Умение работать с возражениями</li>
+                                <li>Знание основ интернет-маркетинга</li>
+                            </ul>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-blue-600">от 1 000 $</span>
+                            <a href="#apply-modal" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">Откликнуться</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Вакансия 3 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden vacancy-card">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">Контент-менеджер</h3>
+                            <span class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">Гибрид</span>
+                        </div>
+                        <div class="flex items-center text-gray-600 mb-4">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            <span class="mr-4">Ташкент</span>
+                            <i class="fas fa-briefcase mr-2"></i>
+                            <span>Опыт от 2 лет</span>
+                        </div>
+                        <p class="text-gray-700 mb-4">Ищем контент-менеджера для создания и редактирования материалов сайта, работы с пользовательским контентом и улучшения качества размещаемых объявлений.</p>
+                        <div class="mb-4">
+                            <h4 class="font-bold text-gray-800 mb-2">Требования:</h4>
+                            <ul class="list-disc list-inside text-gray-700 space-y-1">
+                                <li>Опыт работы с контентом</li>
+                                <li>Грамотность и внимательность к деталям</li>
+                                <li>Базовые знания SEO</li>
+                                <li>Опыт работы с CMS</li>
+                            </ul>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-blue-600">от 900 $</span>
+                            <a href="#apply-modal" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">Откликнуться</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Вакансия 4 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden vacancy-card">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">Специалист поддержки пользователей</h3>
+                            <span class="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full">Удалённо</span>
+                        </div>
+                        <div class="flex items-center text-gray-600 mb-4">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            <span class="mr-4">Удалённо</span>
+                            <i class="fas fa-briefcase mr-2"></i>
+                            <span>Без опыта</span>
+                        </div>
+                        <p class="text-gray-700 mb-4">Нам нужен отзывчивый и коммуникабельный специалист для работы с обращениями пользователей через чат, email и телефон. Обучение проводим.</p>
+                        <div class="mb-4">
+                            <h4 class="font-bold text-gray-800 mb-2">Требования:</h4>
+                            <ul class="list-disc list-inside text-gray-700 space-y-1">
+                                <li>Грамотная письменная и устная речь</li>
+                                <li>Умение работать в команде</li>
+                                <li>Готовность к сменному графику</li>
+                                <li>Базовые знания ПК</li>
+                            </ul>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-blue-600">от 400 $</span>
+                            <a href="#apply-modal" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">Откликнуться</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Вакансия 5 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden vacancy-card">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">Senior Java-разработчик</h3>
+                            <span class="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full">Удалённо</span>
+                        </div>
+                        <div class="flex items-center text-gray-600 mb-4">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            <span class="mr-4">Ташкент или удалённо</span>
+                            <i class="fas fa-briefcase mr-2"></i>
+                            <span>Опыт от 3 лет</span>
+                        </div>
+                        <p class="text-gray-700 mb-4">Ищем опытного Java-разработчика для работы над основным продуктом компании. Участие в проектах по созданию, модернизации, доработке систем в роли разработчика.</p>
+                        <div class="mb-4">
+                            <h4 class="font-bold text-gray-800 mb-2">Требования:</h4>
+                            <ul class="list-disc list-inside text-gray-700 space-y-1">
+                                <li>Владение: Java 11, Spring Boot, JDBC, Spring DATA, Hibernate, Spring REST, Maven, Git</li>
+                                <li>Опыт работы с продуктовыми командами</li>
+                            </ul>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-blue-600">от 2 500 $</span>
+                            <a href="#apply-modal" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">Откликнуться</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Вакансия 6 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden vacancy-card">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">Senior Android-разработчик</h3>
+                            <span class="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full">Удалённо</span>
+                        </div>
+                        <div class="flex items-center text-gray-600 mb-4">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            <span class="mr-4">Ташкент или удалённо</span>
+                            <i class="fas fa-briefcase mr-2"></i>
+                            <span>Опыт от 3 лет</span>
+                        </div>
+                        <p class="text-gray-700 mb-4">Ищем опытного Java-разработчика для работы над основным продуктом компании. Участие в проектах по созданию, модернизации, доработке систем в роли разработчика.</p>
+                        <div class="mb-4">
+                            <h4 class="font-bold text-gray-800 mb-2">Требования:</h4>
+                            <ul class="list-disc list-inside text-gray-700 space-y-1">
+                                <li>Java/Kotlin</li>
+                                <li>RxJava2/RxKotlin</li>
+                                <li>Основные компоненты Android SDK</li>
+                                <li>Работа с популярными библиотеками и сервисами (Retrofit2, Glide, Firebase и др)</li>
+                                <li>Опыт интеграции приложения с различными API</li>
+                            </ul>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-blue-600">от 2 500 $</span>
+                            <a href="#apply-modal" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">Откликнуться</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Application Form Modal (hidden by default) -->
+        <div id="apply-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold text-gray-800">Отклик на вакансию</h3>
+                        <button class="text-gray-500 hover:text-gray-700" onclick="closeModal()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <form>
+                        <div class="mb-4">
+                            <label for="vacancy" class="block text-gray-700 mb-2">Вакансия</label>
+                            <input type="text" id="vacancy" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" readonly>
+                        </div>
+                        <div class="mb-4">
+                            <label for="name" class="block text-gray-700 mb-2">Ваше имя</label>
+                            <input type="text" id="name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="email" class="block text-gray-700 mb-2">Email</label>
+                            <input type="email" id="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="phone" class="block text-gray-700 mb-2">Телефон</label>
+                            <input type="tel" id="phone" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="resume" class="block text-gray-700 mb-2">Резюме (PDF, DOC)</label>
+                            <input type="file" id="resume" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" accept=".pdf,.doc,.docx">
+                        </div>
+                        <div class="mb-4">
+                            <label for="message" class="block text-gray-700 mb-2">Сопроводительное письмо</label>
+                            <textarea id="message" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors">Отправить отклик</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- RoboMarket -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">RoboMarket</h3>
+                    <p class="text-gray-400 text-sm">Лучшая площадка для покупки и продажи товаров и услуг. Безопасные сделки и тысячи довольных пользователей.</p>
+                </div>
+                
+                <!-- Раздел "О компании" -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">О компании</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm">О нас</a></li>
+                        <li><a href="advertising.html" class="text-gray-400 hover:text-white text-sm">Реклама на сайте</a></li>
+                        <li><a href="vacancies.html" class="text-gray-400 hover:text-blue-400 text-sm">Вакансии</a></li>
+                        <li><a href="help.html" class="text-gray-400 hover:text-white text-sm">Помощь</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Контакты -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Контакты</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-gray-400 mt-1 mr-2"></i>
+                            <span class="text-gray-400 text-sm">Ташкент, Узбекистан</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone-alt text-gray-400 mt-1 mr-2"></i>
+                            <span class="text-gray-400 text-sm">+998 71 123 45 67</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope text-gray-400 mt-1 mr-2"></i>
+                            <span class="text-gray-400 text-sm">support@robomarket.uz</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Мобильные приложения -->
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Скачать наше приложение</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <!-- Android -->
+                        <a href="https://play.google.com/store" target="_blank" class="flex items-center justify-right">
+                            <img src="../../res/download/android.svg" 
+                                alt="Google Play" 
+                                style="height: 45px; width: 200px; max-width: 150px;">
+                        </a>
+                        <!-- iOS -->
+                        <a href="https://www.apple.com/app-store/" target="_blank" class="flex items-center justify-right">
+                            <img src="../../res/download/ios.svg" 
+                                alt="App Store" 
+                                style="height: 45px; width: 200px; max-width: 150px;">
+                        </a>
+                        <!-- Huawei -->
+                        <a href="https://appgallery.huawei.com/" target="_blank" class="flex items-center justify-right">
+                            <div class="bg-white p-1 rounded overflow-hidden" style="width: 150px; height: 45px;">
+                                <img src="../../res/download/huawei.svg" 
+                                    alt="AppGallery" 
+                                    style="height: 45px; width: 200px; object-fit: contain;">
+                            </div>
+                        </a>
+                        <!-- Microsoft -->
+                        <a href="https://www.microsoft.com/store/apps" target="_blank" class="flex items-center justify-right">
+                            <div class="bg-white p-1 rounded overflow-hidden" style="width: 150px; height: 45px;">
+                                <img src="../../res/download/microsoft.svg" 
+                                    alt="Microsoft Store" 
+                                    style="height: 40px; width: 150px; object-fit: contain;">
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Нижняя часть футера -->
+            <div class="border-t border-gray-700 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">© 2025 RoboMarket. Все права защищены.</p>
+                <div class="flex space-x-4">
+                    <a href="https://vk.com/programist_drevn1y" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-vk text-xl"></i>
+                    </a>
+                    <a href="https://t.me/drevn1y" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-telegram text-xl"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@_drevn1y_" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-youtube text-xl"></i>
+                    </a>
+                    <a href="https://www.instagram.com/sardorbek_asilov/" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-lg border-t border-gray-200">
+        <div class="flex justify-around py-3">
+            <a href="index.html" class="flex flex-col items-center text-gray-600">
+                <i class="fas fa-home text-xl"></i>
+                <span class="text-xs mt-1">Главная</span>
+            </a>
+            <a href="#" class="flex flex-col items-center text-gray-600">
+                <i class="fas fa-search text-xl"></i>
+                <span class="text-xs mt-1">Поиск</span>
+            </a>
+            <a href="new-ad.html" class="flex flex-col items-center text-gray-600">
+                <i class="far fa-plus-square text-xl"></i>
+                <span class="text-xs mt-1">Добавить</span>
+            </a>
+            <a href="favorites.html" class="flex flex-col items-center text-gray-600">
+                <i class="far fa-heart text-xl"></i>
+                <span class="text-xs mt-1">Избранное</span>
+            </a>
+            <a href="profile.html" class="flex flex-col items-center text-gray-600">
+                <i class="far fa-user text-xl"></i>
+                <span class="text-xs mt-1">Профиль</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Modal functions
+        function openModal(vacancyTitle) {
+            document.getElementById('apply-modal').classList.remove('hidden');
+            document.getElementById('vacancy').value = vacancyTitle;
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('apply-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Set up click handlers for apply buttons
+        document.querySelectorAll('a[href="#apply-modal"]').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const vacancyTitle = this.closest('.vacancy-card').querySelector('h3').textContent;
+                openModal(vacancyTitle);
+            });
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('apply-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
